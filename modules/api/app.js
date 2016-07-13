@@ -10,6 +10,15 @@ var debug = require('debug')('app4');
 
 var app = express();
 
+var model = require('./models-postgre/notes');
+model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", function (err) {
+  if (err) throw err;
+});
+
+[index, notes].forEach(function (router) {
+  router.configure({model: model});
+});
+
 // view engine setup
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +49,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.render('showerror', {
       message: err.message,
       error: err
     });
