@@ -1,0 +1,8 @@
+<% include top %>
+<form method='POST' action='/postdodestroy'>
+  <input type='hidden' name='id' value='<%= post ? id : "" %>'>
+  <p>Delete <%= post.title %> ?</p>
+  <br/><input type='submit' value='DELETE' />
+  <a href="/postview?key=<%= id %>">Cancel</a>
+</form>
+<% include bottom %>
