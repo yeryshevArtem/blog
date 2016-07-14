@@ -13,17 +13,18 @@ module.exports.disconnect = function(callback) {
   callback();
 }
 
-module.exports.create = function (key, title, body, callback) {
-  client.query("insert into posts(id, title, body) values($1, $2, $3)", [key, title, body]).then(function () {
-    callback();
+module.exports.create = function (title, body, callback) {
+  client.query("insert into posts(title, body) values($1, $2) returning id", [title, body]).then(function (id) {
+    callback(null, id)
   }).catch(function (err) {
     callback(err);
   });
 }
 
 module.exports.update = function (key, title, body, callback) {
-  client.none("update posts set title=$1, body=$2 where id=$3", [title, body, key]).then(function (data) {
-    callback(null, data);
+  client.query("update posts set title=$1, body=$2 where id=$3 returning id", [title, body, key]).then(function (id) {
+    console.log(id);
+    callback(null, id);
   }).catch(function (err) {
     callback(err);
   });
