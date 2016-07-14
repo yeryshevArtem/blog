@@ -1,9 +1,9 @@
 <% include top %>
 <%
-if (posts) {
-  posts.forEach(function(post) {
-    %><p><%= post.key %>:
-    <a href="/postview?key=<%= post.key %>"><%= post.title %></a>
+if (notes) {
+  notes.forEach(function(note) {
+    %><p><%= note.key %>:
+    <a href="/noteview?key=<%= note.key %>"><%= note.title %></a>
     </p><%
   });
 }

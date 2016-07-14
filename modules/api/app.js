@@ -5,17 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
-var posts = require('./routes/posts');
+var notes = require('./routes/notes');
 var debug = require('debug')('app4');
 
 var app = express();
 
-var model = require('./models-postgre/posts');
+var model = require('./models-postgre/notes');
 model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", function (err) {
   if (err) throw err;
 });
 
-[index, posts].forEach(function (router) {
+[index, notes].forEach(function (router) {
   router.configure({model: model});
 });
 
@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/', posts);
+app.use('/', notes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

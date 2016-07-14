@@ -1,9 +1,0 @@
-<% include top %>
-<h3><%= post ? post.title : "" %></h3>
-<p><%= post ? post.body : "" %></p>
-<p>Key: <%= id %></p>
-<% if (id) { %>
-  <hr/>
-  <p><a href="/postdestroy?key=<%= id %>">Delete</a> | <a href="/postedit?key=<%= id %>">Edit</a></p>
-<% } %>
-<% include bottom %>
