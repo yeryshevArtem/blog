@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var index = require('./routes/index');
 var posts = require('./routes/posts');
 var debug = require('debug')('app4');
 
@@ -15,9 +14,9 @@ model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", functio
   if (err) throw err;
 });
 
-[index, posts].forEach(function (router) {
-  router.configure({model: model});
-});
+
+posts.configure({model: model});
+
 
 // view engine setup
 app.set('port', process.env.PORT || 3000);
@@ -32,8 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/', posts);
+app.use('/api', posts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
