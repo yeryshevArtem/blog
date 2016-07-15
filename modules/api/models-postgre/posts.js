@@ -22,9 +22,8 @@ module.exports.create = function (title, body, callback) {
 }
 
 module.exports.update = function (key, title, body, callback) {
-  client.query("update posts set title=$1, body=$2 where id=$3 returning id", [title, body, key]).then(function (id) {
-    console.log(id);
-    callback(null, id);
+  client.query("update posts set title=$1, body=$2 where id=$3", [title, body, key]).then(function () {
+    callback(null);
   }).catch(function (err) {
     callback(err);
   });
@@ -49,8 +48,8 @@ module.exports.destroy = function (key, callback) {
 module.exports.titles = function (callback) {
   var titles = [];
   client.any("select id, title from posts").then(function (data) {
-    data.forEach(function(row, index, data) {
-      titles.push({key: row.id, title: row.title});
+    data.forEach(function(row) {
+      titles.push({id: row.id, title: row.title, body: row.body});
     });
   }).catch(function (err) {
     callback(err);
