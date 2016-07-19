@@ -13,3 +13,9 @@ router.get('/login', function (req, res) {
     title: 'Welcome'
   });
 });
+
+router.get('/post/:id/login', function (req, res) {
+  res.render('login', {
+    title: 'Welcome'
+  });
+});

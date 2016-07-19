@@ -11,7 +11,7 @@ var debug = require('debug')('app4');
 
 var app = express();
 
-var model = require('./models-postgre/posts');
+var model = require('../../models-postgre/posts');
 model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", function (err) {
   if (err) throw err;
 });
@@ -38,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/', post);
 app.use('/', login);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
