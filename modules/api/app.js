@@ -9,14 +9,12 @@ var debug = require('debug')('app4');
 
 var app = express();
 
-var model = require('./models-postgre/posts');
+var model = require('../../models-postgre/posts');
 model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", function (err) {
   if (err) throw err;
 });
 
-
 posts.configure({model: model});
-
 
 // view engine setup
 app.set('port', process.env.PORT || 3000);
