@@ -19,14 +19,9 @@ window.onload = function () {
       var id = tr.id;
       window.location.href = "/post/" + id;
     });
-
-    login.addEventListener('click', function (event) {
-      window.location.href += "login";
-    });
-
-  } else {
-    login.addEventListener('click', function (event) {
-      window.location.href = window.location.href + "/login";
-    });
   }
+  
+  login.addEventListener('click', function (event) {
+    window.location.href = "/login";
+  });
 }
