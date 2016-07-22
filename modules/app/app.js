@@ -12,7 +12,7 @@ var debug = require('debug')('app4');
 var app = express();
 
 var model = require('../../models-postgre/posts');
-model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", function (err) {
+model.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
   if (err) throw err;
 });
 
@@ -22,7 +22,7 @@ model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", functio
 
 // view engine setup
 
-app.set('port', process.env.PORT || 7000);
+app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -71,9 +71,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), "192.168.33.11", function() {
   debug('Express server listening on port ' + server.address().port);
 });
-
 
 // module.exports = app;

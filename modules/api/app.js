@@ -10,7 +10,7 @@ var debug = require('debug')('app4');
 var app = express();
 
 var model = require('../../models-postgre/posts');
-model.connect("postgres://bruce_wayne:43873a65@localhost:5432/gothamdb", function (err) {
+model.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
   if (err) throw err;
 });
 
