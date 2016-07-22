@@ -26,16 +26,9 @@ sudo apt-get install -y nodejs
 
 echo "Installing postgresql"
 echo vagrant | sudo -S apt-get install -y postgresql=$POSTGRE_VERSION\* > /dev/null
-
 echo vagrant | sudo -S -u postgres psql -c "CREATE ROLE $DB_USER LOGIN UNENCRYPTED PASSWORD '$DB_PASSWORD' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;" > /dev/null
-echo vagrant | sudo -S -u postgres psql -c "CREATE DATABASE $DB_NAME" > /dev/null
-# echo vagrant | sudo -S -u postgres psql -c "GRANT USAGE ON SCHEMA public to $DB_USER" > /dev/null
-# echo vagrant | sudo -S -u postgres psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO $DB_USER" > /dev/null
-# echo vagrant | sudo -S -u postgres psql -c "GRANT CONNECT ON DATABASE $DB_NAME to $DB_USER" > /dev/null
-# echo vagrant | sudo -S -u postgres psql -c "GRANT USAGE ON SCHEMA public to $DB_USER" > /dev/null
-# echo vagrant | sudo -S -u postgres psql -c "GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO $DB_USER" > /dev/null
-# echo vagrant | sudo -S -u postgres psql -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO $DB_USER" > /dev/null
+echo vagrant | sudo -S -u postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_USER" > /dev/null
 echo vagrant | sudo -S sed -i 's@#listen_addresses@listen_addresses@' /etc/postgresql/$POSTGRE_VERSION/main/postgresql.conf  #?????????
-echo vagrant | sudo -u postgres psql $DB_NAME < /home/vagrant/projects/blog/dump.sql
-echo vagrant | sudo -u postgres psql $DB_NAME < /home/vagrant/projects/blog/test.sql
-echo vagrant | sudo -S -u postgres psql -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO $DB_USER" > /dev/null
+
+echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/dump.sql
+echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/test.sql
