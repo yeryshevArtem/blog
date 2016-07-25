@@ -49,11 +49,12 @@ module.exports.titles = function (callback) {
   var titles = [];
   client.any("select id, title from posts").then(function (data) {
     data.forEach(function(row) {
-      titles.push({id: row.id, title: row.title, body: row.body});
+      titles.push({id: row.id, title: row.title});
     });
   }).catch(function (err) {
     callback(err);
   }).then(function () {
+    console.log(titles);
     callback(null, titles);
   });
 }
