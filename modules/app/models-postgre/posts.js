@@ -22,8 +22,16 @@ module.exports.create = function (title, body, callback) {
 }
 
 module.exports.update = function (key, title, body, callback) {
-  client.query("update posts set title=$1, body=$2 where id=$3", [title, body, key]).then(function () {
-    callback(null);
+  client.query("select * from posts where id=$1", [key]).then(function (data) {
+    if (data.length !== 0) {
+      client.query("update posts set title=$1, body=$2 where id=$3", [title, body, key]).then(function () {
+        callback(null);
+      }).catch(function (err) {
+        callback(err);
+      });
+    } else {
+      throw err;
+    }
   }).catch(function (err) {
     callback(err);
   });
@@ -31,15 +39,27 @@ module.exports.update = function (key, title, body, callback) {
 
 module.exports.read = function (key, callback) {
   client.query("select * from posts where id=$1", [key]).then(function (data) {
-    callback(null, data);
+    if (data.length !== 0) {
+      callback(null, data);
+    } else {
+      throw err;
+    }
   }).catch(function (err) {
     callback(err);
   });
-}
+} 
 
 module.exports.destroy = function (key, callback) {
-  client.query("delete from posts where id = $1", [key]).then(function () {
-    callback();
+  client.query("select * from posts where id=$1", [key]).then(function (data) {
+    if (data.length !== 0) {
+      client.query("delete from posts where id = $1", [key]).then(function () {
+        callback(null);
+      }).catch(function (err) {
+        callback(err);
+      });
+    } else {
+      throw err;
+    }
   }).catch(function (err) {
     callback(err);
   });
