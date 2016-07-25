@@ -47,7 +47,7 @@ module.exports.read = function (key, callback) {
   }).catch(function (err) {
     callback(err);
   });
-} 
+}
 
 module.exports.destroy = function (key, callback) {
   client.query("select * from posts where id=$1", [key]).then(function (data) {
@@ -74,7 +74,6 @@ module.exports.titles = function (callback) {
   }).catch(function (err) {
     callback(err);
   }).then(function () {
-    console.log(titles);
     callback(null, titles);
   });
 }
