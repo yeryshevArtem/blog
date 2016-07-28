@@ -22,7 +22,8 @@ router.get('/posts', function (req, res, next) {
     } else {
       responseData = JSON.stringify(data);
       res.writeHead(200, {
-        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
       });
       res.end(responseData);
     }
