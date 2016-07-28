@@ -3,8 +3,12 @@ var Navbar = require('./Navbar');
 var MainContainer = require('./MainContainer');
 var styles = require('../styles');
 var Modal = require('../components/Modal');
+var PostRow = require('./PostRow');
 
 function Posts (props) {
+  var rowsOfPosts = props.listOfPosts.map(function (post, key) {
+    return <PostRow key={post.id} data={post} />
+  });
   return (
     <MainContainer>
       <Navbar />
@@ -14,7 +18,7 @@ function Posts (props) {
           Create
         </button>
       </div>
-      <table className="table table-hover">
+      <table className="table table-hover" onMouseDown={props.mouseDown}>
         <thead>
           <tr>
             <th>ID</th>
@@ -22,18 +26,7 @@ function Posts (props) {
           </tr>
         </thead>
         <tbody onMouseOver={props.mouseOvered}>
-          <tr>
-            <td>1</td>
-            <td>my first post</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>my second post</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>my third post</td>
-          </tr>
+          {rowsOfPosts}
         </tbody>
       </table>
     </MainContainer>
