@@ -46,6 +46,7 @@ router.get('/posts/:id', function (req, res, next) {
       responseData = JSON.stringify(data[0]);
       res.writeHead(200, {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
       });
       res.end(responseData);
     }
@@ -80,7 +81,8 @@ router.post('/posts', function (req, res, next) {
         } else {
           responseData = JSON.stringify(data[0]);
           res.writeHead(201, {
-            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/x-www-form-urlencoded",
             "Location": "localhost:3000/api/posts/" + id
           });
           res.end(responseData);

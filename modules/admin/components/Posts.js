@@ -2,33 +2,28 @@ var React = require('react');
 var Navbar = require('./Navbar');
 var MainContainer = require('./MainContainer');
 var styles = require('../styles');
-var Modal = require('../components/Modal');
-var PostRow = require('./PostRow');
+var ModalContainer = require('../containers/ModalContainer');
+var Table = require('./Table');
 
 function Posts (props) {
-  var rowsOfPosts = props.listOfPosts.map(function (post, key) {
-    return <PostRow key={post.id} data={post} />
-  });
   return (
     <MainContainer>
       <Navbar />
-      <Modal />
+      <ModalContainer
+        stateOfPostComponent={props.listOfPosts}
+        updateToModalCont={props.update} />
       <div className='col-sm-12' style={styles.space}>
-        <button type="button" className="btn btn-primary" onClick={props.clickedCreate}>
+        <button type="button" className="btn btn-primary btn-create" onClick={props.clickedCreate}>
           Create
         </button>
       </div>
-      <table className="table table-hover" onMouseDown={props.mouseDown}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-          </tr>
-        </thead>
-        <tbody onMouseOver={props.mouseOvered}>
-          {rowsOfPosts}
-        </tbody>
-      </table>
+      <div className='col-sm-12' style={styles.space}>
+        <Table
+          className="table table-hover table-posts"
+          mouseDownToTableComp={props.mouseDown}
+          mouseOveredToTableComp={props.mouseOvered}
+          listToTableComp={props.listOfPosts} />
+      </div>
     </MainContainer>
   )
 }

@@ -7,7 +7,7 @@ function Home () {
   return (
     <MainContainer>
       <h1>Welcome to blog!</h1>
-      <Link to="/posts">Posts</Link>
+      <Link to="/posts"><button type="button" className="btn btn-default">Posts</button></Link>
     </MainContainer>
   )
 }

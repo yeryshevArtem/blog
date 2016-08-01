@@ -1,5 +1,6 @@
 var React = require('react');
 var Posts = require('../components/Posts');
+var loadData = require('../utils/loadData');
 
 var PostsContainer = React.createClass({
   getInitialState: function () {
@@ -7,13 +8,17 @@ var PostsContainer = React.createClass({
       posts: []
     }
   },
-  componentDidMount: function() {
-    var urlToListOfPosts = 'http://192.168.33.11:8000/api/posts';
-    this.serverRequest = $.get(urlToListOfPosts, function (result) {
+  componentDidMount: function () {
+    loadData.getPosts().then(function (result) {
       this.setState({
-        posts: result
+        posts: result.data
       });
-    }.bind(this));
+    }.bind(this)).catch(function (err) {
+      alert(err.message);
+    });
+  },
+  componentWillUpdate: function (nextProps, nextState) {
+    console.log(nextState.posts.length);
   },
   handleCreateButton: function () {
     $('#myModal').modal('show');
@@ -24,13 +29,20 @@ var PostsContainer = React.createClass({
   handleMouseDown: function (event) {
     event.preventDefault();
   },
+  updateData: function (config) {
+    this.state.posts.push(config);
+    this.setState({
+      posts: this.state.posts
+    });
+  }, //Dynamic updating posts state
   render: function () {
     return (
       <Posts
+        update={this.updateData}
         clickedCreate={this.handleCreateButton}
         mouseOvered={this.handleMouseOvered}
         listOfPosts={this.state.posts}
-        mouseDown={this.handleMouseDown}/>
+        mouseDown={this.handleMouseDown} />
     )
   }
 });
