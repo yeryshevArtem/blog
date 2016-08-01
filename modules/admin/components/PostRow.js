@@ -1,10 +1,11 @@
 var React = require('react');
+var ReactRouter = require('react-router');
 
 function PostRow (props) {
   return (
     <tr>
-      <td>{props.data.id}</td>
-      <td>{props.data.title}</td>
+      <td>{props.postToPostRowComp.id}</td>
+      <td>{props.postToPostRowComp.title}</td>
     </tr>
   )
 }
