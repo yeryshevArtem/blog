@@ -92,9 +92,39 @@ router.post('/posts', function (req, res, next) {
   });
 });
 
+router.options('/posts/:id', function (req, res, next) {
+  res.writeHead(200, {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "PUT, DELETE",
+    "Access-Control-Allow-Headers": "Content-Type"
+  });
+  res.end();
+});
+
 //update post
+// router.put('/posts/:id', function (req, res, next) {
+//   posts.update(req.params.id, req.body.title, req.body.body, function (err) {
+//     var responseData = undefined;
+//     if (err) {
+//       var errorMessage = {
+//         id: "Edit failed",
+//         description: "Failed to edit. Maybe ID not found or invalid!"
+//       };
+//       responseData = JSON.stringify(errorMessage);
+//       res.statusCode = 404;
+//       res.end(responseData);
+//     } else {
+//       res.writeHead(204, {
+//         "Access-Control-Allow-Origin": "*",
+//         "Content-Type": "application/x-www-form-urlencoded"
+//       });
+//       res.end();
+//     }
+//   });
+// });
+
 router.put('/posts/:id', function (req, res, next) {
-  posts.update(req.params.id, req.body.title, req.body.body, function (err) {
+  posts.update(req.params.id, req.body.title, req.body.body, function (err, data) {
     var responseData = undefined;
     if (err) {
       var errorMessage = {
@@ -105,8 +135,31 @@ router.put('/posts/:id', function (req, res, next) {
       res.statusCode = 404;
       res.end(responseData);
     } else {
-      res.statusCode = 204;
-      res.end();
+      id = data[0].id;
+      posts.read(id, function (err, data) {
+        var responseData = undefined;
+        if (err) {
+          var errorMessage = {
+            id: "Create failed",
+            description: "Failed to create!"
+          };
+          responseData = JSON.stringify(errorMessage);
+          res.statusCode = 404;
+          res.end(responseData);
+        } else {
+          responseData = JSON.stringify(data[0]);
+          res.writeHead(200, {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/x-www-form-urlencoded"
+          });
+          res.end(responseData);
+        }
+      });
+      // res.writeHead(204, {
+      //   "Access-Control-Allow-Origin": "*",
+      //   "Content-Type": "application/x-www-form-urlencoded"
+      // });
+      // res.end();
     }
   });
 });

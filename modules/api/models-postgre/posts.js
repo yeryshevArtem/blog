@@ -21,11 +21,27 @@ module.exports.create = function (title, body, callback) {
   });
 }
 
+// module.exports.update = function (key, title, body, callback) {
+//   client.query("select * from posts where id=$1", [key]).then(function (data) {
+//     if (data.length !== 0) {
+//       client.query("update posts set title=$1, body=$2 where id=$3", [title, body, key]).then(function () {
+//         callback(null);
+//       }).catch(function (err) {
+//         callback(err);
+//       });
+//     } else {
+//       throw err;
+//     }
+//   }).catch(function (err) {
+//     callback(err);
+//   });
+// }
+
 module.exports.update = function (key, title, body, callback) {
   client.query("select * from posts where id=$1", [key]).then(function (data) {
     if (data.length !== 0) {
-      client.query("update posts set title=$1, body=$2 where id=$3", [title, body, key]).then(function () {
-        callback(null);
+      client.query("update posts set title=$1, body=$2 where id=$3  returning id", [title, body, key]).then(function (id) {
+        callback(null, id);
       }).catch(function (err) {
         callback(err);
       });
