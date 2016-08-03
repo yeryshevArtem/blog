@@ -1,11 +1,13 @@
 var React = require('react');
 var Posts = require('../components/Posts');
 var loadData = require('../utils/loadData');
+var ModalContainer = require('./ModalContainer');
 
 var PostsContainer = React.createClass({
   getInitialState: function () {
     return {
-      posts: []
+      posts: [],
+      curPost: undefined
     }
   },
   componentDidMount: function () {
@@ -17,10 +19,12 @@ var PostsContainer = React.createClass({
       alert(err.message);
     });
   },
-  componentWillUpdate: function (nextProps, nextState) {
-    console.log(nextState.posts.length);
-  },
   handleCreateButton: function () {
+    console.log(true);
+    this.setState({
+      posts: this.state.posts,
+      curPost: undefined
+    });
     $('#myModal').modal('show');
   },
   handleMouseOvered: function (event) {
@@ -29,6 +33,19 @@ var PostsContainer = React.createClass({
   handleMouseDown: function (event) {
     event.preventDefault();
   },
+  handleEditButton: function (event) {
+    var self = this;
+    var id = event.target.parentNode.parentNode.id;
+    this.state.posts.forEach(function (post) {
+      if (post.id == id) {
+        self.setState({
+          posts: self.state.posts,
+          curPost: post
+        });
+      }
+    });
+    $('#myModal').modal('show');
+  },
   updateData: function (config) {
     this.state.posts.push(config);
     this.setState({
@@ -36,14 +53,38 @@ var PostsContainer = React.createClass({
     });
   }, //Dynamic updating posts state
   render: function () {
-    return (
-      <Posts
-        update={this.updateData}
-        clickedCreate={this.handleCreateButton}
-        mouseOvered={this.handleMouseOvered}
-        listOfPosts={this.state.posts}
-        mouseDown={this.handleMouseDown} />
-    )
+    if (this.props.params.id == undefined && this.state.curPost === undefined) {
+      return (
+        <div>
+          <Posts
+            update={this.updateData}
+            clickedCreate={this.handleCreateButton}
+            mouseOvered={this.handleMouseOvered}
+            listOfPosts={this.state.posts}
+            mouseDown={this.handleMouseDown}
+            clickedEdit={this.handleEditButton} />
+        </div>
+      )
+    } else if (this.props.params.id != undefined) {
+      return (
+        <div>
+          {this.props.children}
+        </div>
+      )
+    } else if (this.state.curPost != undefined) {
+      return (
+        <div>
+          <Posts
+            curPostForPostComp={this.state.curPost}
+            update={this.updateData}
+            clickedCreate={this.handleCreateButton}
+            mouseOvered={this.handleMouseOvered}
+            listOfPosts={this.state.posts}
+            mouseDown={this.handleMouseDown}
+            clickedEdit={this.handleEditButton} />
+        </div>
+      )
+    }
   }
 });
 

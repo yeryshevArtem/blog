@@ -7,6 +7,7 @@ function Table (props) {
     <table className="table table-hover table-posts" onMouseDown={props.mouseDownToTableComp}>
       <TableHead />
       <TableBody
+        editButtonToTbodyComp={props.editButtonToTableComp}
         mouseOveredToTableBodyComp={props.mouseOveredToTableComp}
         listToTbodyComp={props.listToTableComp} />
     </table>

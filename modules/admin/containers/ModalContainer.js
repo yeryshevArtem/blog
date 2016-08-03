@@ -6,20 +6,35 @@ var loadData = require('../utils/loadData');
 var ModalContainer = React.createClass({
   getInitialState: function () {
     return {
+      id: '',
       title: '',
       body: ''
     }
   },
-  shouldComponentUpdate: function (nextProps, nextState) {
-    if (nextState.title !== this.state.title || nextState.body !== this.state.body) {
-      return true
-    } else {
-      return false
+  componentWillReceiveProps: function (nextProps) {
+    if (nextProps.curPostForModalCont) {
+      this.setState ({
+        id: nextProps.curPostForModalCont.id,
+        title: nextProps.curPostForModalCont.title,
+        body: nextProps.curPostForModalCont.body
+      });
+    } else if (nextProps.curPostForModalCont == undefined) {
+      this.setState ({
+        id: '',
+        title: '',
+        body: ''
+      });
     }
   },
-  componentWillReceiveProps: function (nextProps) {
-    console.log(nextProps);
-  },
+  // componentDidMount: function () {
+  //   if (this.props.dataForEdit) {
+  //     this.setState({
+  //       id: this.props.dataForEdit.id,
+  //       title: this.props.dataForEdit.title,
+  //       body: this.props.dataForEdit.body
+  //     });
+  //   }
+  // },
   handleTitleChange: function(e) {
     this.setState({title: e.target.value});
   },
@@ -32,6 +47,11 @@ var ModalContainer = React.createClass({
     var body = this.state.body;
     dataForSendToServer = "title=" + title + "&body=" + body; //issue with axios
     loadData.createPost(dataForSendToServer).then(function (returnedData) {
+      this.setState({
+        id: returnedData.data.id,
+        title: returnedData.data.title,
+        body: returnedData.data.body
+      });
       $('#myModal').modal('hide');
       this.props.updateToModalCont(returnedData.data);
     }.bind(this)).catch(function (err) {

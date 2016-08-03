@@ -10,7 +10,7 @@ function Posts (props) {
     <MainContainer>
       <Navbar />
       <ModalContainer
-        stateOfPostComponent={props.listOfPosts}
+        curPostForModalCont={props.curPostForPostComp}
         updateToModalCont={props.update} />
       <div className='col-sm-12' style={styles.space}>
         <button type="button" className="btn btn-primary btn-create" onClick={props.clickedCreate}>
@@ -20,6 +20,7 @@ function Posts (props) {
       <div className='col-sm-12' style={styles.space}>
         <Table
           className="table table-hover table-posts"
+          editButtonToTableComp={props.clickedEdit}
           mouseDownToTableComp={props.mouseDown}
           mouseOveredToTableComp={props.mouseOvered}
           listToTableComp={props.listOfPosts} />
