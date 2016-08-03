@@ -20,7 +20,6 @@ var PostsContainer = React.createClass({
     });
   },
   handleCreateButton: function () {
-    console.log(true);
     this.setState({
       posts: this.state.posts,
       curPost: undefined
@@ -46,14 +45,27 @@ var PostsContainer = React.createClass({
     });
     $('#myModal').modal('show');
   },
-  updateData: function (config) {
-    this.state.posts.push(config);
-    this.setState({
-      posts: this.state.posts
-    });
-  }, //Dynamic updating posts state
+  updateData: function (config, method) {
+    if (method.config.method === 'post') {
+      this.state.posts.push(config);
+      this.setState({
+        posts: this.state.posts
+      });
+    } else {
+      var self = this;
+      this.state.posts.forEach(function (post, index) {
+        if (post.id == config.id) {
+          self.state.posts[index] = config;
+          self.setState({
+            posts: self.state.posts,
+            curPost: undefined
+          });
+        }
+      });
+    }
+  },
   render: function () {
-    if (this.props.params.id == undefined && this.state.curPost === undefined) {
+    if (this.props.params.id === undefined && this.state.curPost === undefined) {
       return (
         <div>
           <Posts

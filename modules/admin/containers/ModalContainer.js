@@ -26,15 +26,6 @@ var ModalContainer = React.createClass({
       });
     }
   },
-  // componentDidMount: function () {
-  //   if (this.props.dataForEdit) {
-  //     this.setState({
-  //       id: this.props.dataForEdit.id,
-  //       title: this.props.dataForEdit.title,
-  //       body: this.props.dataForEdit.body
-  //     });
-  //   }
-  // },
   handleTitleChange: function(e) {
     this.setState({title: e.target.value});
   },
@@ -42,21 +33,41 @@ var ModalContainer = React.createClass({
     this.setState({body: e.target.value});
   },
   handleSaveButton: function () {
-    var dataForSendToServer = undefined;
-    var title = this.state.title;
-    var body = this.state.body;
-    dataForSendToServer = "title=" + title + "&body=" + body; //issue with axios
-    loadData.createPost(dataForSendToServer).then(function (returnedData) {
-      this.setState({
-        id: returnedData.data.id,
-        title: returnedData.data.title,
-        body: returnedData.data.body
-      });
-      $('#myModal').modal('hide');
-      this.props.updateToModalCont(returnedData.data);
-    }.bind(this)).catch(function (err) {
+
+    //for create operations
+
+    if (!this.props.curPostForModalCont) {
+      var dataForSendToServer = undefined;
+      var title = this.state.title;
+      var body = this.state.body;
+      dataForSendToServer = "title=" + title + "&body=" + body; //issue with axios
+      loadData.createPost(dataForSendToServer).then(function (returnedData) {
+        this.setState({
+          id: returnedData.data.id,
+          title: returnedData.data.title,
+          body: returnedData.data.body
+        });
+        $('#myModal').modal('hide');
+        this.props.updateToModalCont(returnedData.data, returnedData);
+      }.bind(this)).catch(function (err) {
         alert(err.message);
       });
+
+      //for update operations
+      
+    } else {
+      var dataForSendToServer = undefined;
+      var id = this.props.curPostForModalCont.id;
+      var title = this.state.title;
+      var body = this.state.body;
+      dataForSendToServer = "id=" + id + "&title=" + title + "&body=" + body; //issue with axios
+      loadData.editPost(id, dataForSendToServer).then(function (returnedData) {
+        $('#myModal').modal('hide');
+        this.props.updateToModalCont(returnedData.data, returnedData);
+      }.bind(this)).catch(function (err) {
+        alert(err.message);
+      });
+    }
   },
   handleCancel: function () {
     $('#myModal').modal('hide');

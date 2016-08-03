@@ -9,7 +9,6 @@ function PostRow (props) {
       <td>{props.postToPostRowComp.id}</td>
       <td>{props.postToPostRowComp.title}</td>
       <td>
-        <ModalContainer dataForEdit={props.postToPostRowComp} />
         <Link to={`/posts/${props.postToPostRowComp.id}`}><button type="button" className="btn btn-default">Show</button></Link>
         <button type="button" className="btn btn-default" onClick={props.editButtonToPostRowComp}>Edit</button>
         <button type="button" className="btn btn-default">Delete</button>
