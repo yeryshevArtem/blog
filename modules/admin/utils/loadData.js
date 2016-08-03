@@ -15,6 +15,9 @@ var loadData = {
   },
   getPost: function (id) {
     return axios.get(config.url + id);
+  },
+  editPost: function (id, dataForPutRequest) {
+    return axios.put(config.url + id, dataForPutRequest, config);
   }
 }
 
