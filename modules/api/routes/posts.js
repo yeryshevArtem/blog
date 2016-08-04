@@ -177,7 +177,10 @@ router.delete('/posts/:id', function (req, res, next) {
       res.statusCode = 404;
       res.end(responseData);
     } else {
-      res.statusCode = 204;
+      res.writeHead(204, {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/x-www-form-urlencoded"
+      });
       res.end();
     }
   });
