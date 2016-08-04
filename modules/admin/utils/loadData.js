@@ -18,6 +18,9 @@ var loadData = {
   },
   editPost: function (id, dataForPutRequest) {
     return axios.put(config.url + id, dataForPutRequest, config);
+  },
+  deletePost: function (id) {
+    return axios.delete(config.url + id, config);
   }
 }
 
