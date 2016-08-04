@@ -6,10 +6,13 @@ var ModalContainer = require('../containers/ModalContainer');
 var Table = require('./Table');
 
 function Posts (props) {
+  // console.log(props);
   return (
     <MainContainer>
       <Navbar />
       <ModalContainer
+        listToModalCont={props.listOfPosts}
+        flagToDeleteForModalCont={props.flagToDeleteForPostsComp}
         curPostForModalCont={props.curPostForPostComp}
         updateToModalCont={props.update} />
       <div className='col-sm-12' style={styles.space}>
@@ -21,6 +24,7 @@ function Posts (props) {
         <Table
           className="table table-hover table-posts"
           editButtonToTableComp={props.clickedEdit}
+          deleteButtonToTableComp={props.clickedDelete}
           mouseDownToTableComp={props.mouseDown}
           mouseOveredToTableComp={props.mouseOvered}
           listToTableComp={props.listOfPosts} />

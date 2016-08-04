@@ -9,9 +9,9 @@ function PostRow (props) {
       <td>{props.postToPostRowComp.id}</td>
       <td>{props.postToPostRowComp.title}</td>
       <td>
-        <Link to={`/posts/${props.postToPostRowComp.id}`}><button type="button" className="btn btn-default">Show</button></Link>
-        <button type="button" className="btn btn-default" onClick={props.editButtonToPostRowComp}>Edit</button>
-        <button type="button" className="btn btn-default">Delete</button>
+        <Link to={`/posts/${props.postToPostRowComp.id}`}><button type="button" className="btn btn-info">Show</button></Link>
+        <button type="button" className="btn btn-warning" onClick={props.editButtonToPostRowComp}>Edit</button>
+        <button type="button" className="btn btn-danger" onClick={props.deleteButtonToPostRowComp}>Delete</button>
       </td>
     </tr>
   )

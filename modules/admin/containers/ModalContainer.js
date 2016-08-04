@@ -12,6 +12,7 @@ var ModalContainer = React.createClass({
     }
   },
   componentWillReceiveProps: function (nextProps) {
+    // console.log(nextProps);
     if (nextProps.curPostForModalCont) {
       this.setState ({
         id: nextProps.curPostForModalCont.id,
@@ -36,7 +37,7 @@ var ModalContainer = React.createClass({
 
     //for create operations
 
-    if (!this.props.curPostForModalCont) {
+    if (!this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === false) {
       var dataForSendToServer = undefined;
       var title = this.state.title;
       var body = this.state.body;
@@ -47,34 +48,77 @@ var ModalContainer = React.createClass({
           title: returnedData.data.title,
           body: returnedData.data.body
         });
-        $('#myModal').modal('hide');
+        $('#modalPrimary').modal('hide');
         this.props.updateToModalCont(returnedData.data, returnedData);
       }.bind(this)).catch(function (err) {
         alert(err.message);
       });
 
       //for update operations
-      
-    } else {
+
+    } else if (this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === false) {
       var dataForSendToServer = undefined;
       var id = this.props.curPostForModalCont.id;
       var title = this.state.title;
       var body = this.state.body;
       dataForSendToServer = "id=" + id + "&title=" + title + "&body=" + body; //issue with axios
       loadData.editPost(id, dataForSendToServer).then(function (returnedData) {
-        $('#myModal').modal('hide');
+        $('#modalPrimary').modal('hide');
         this.props.updateToModalCont(returnedData.data, returnedData);
+      }.bind(this)).catch(function (err) {
+        alert(err.message);
+      });
+
+      // for delete operations
+
+    } else if (this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === true) {
+      var id = this.props.curPostForModalCont.id;
+      var listOfPosts = this.props.listToModalCont;
+      loadData.deletePost(id).then(function () {
+        listOfPosts.forEach(function (post, item) {
+          if (post.id === id) {
+            listOfPosts.splice(item, 1)
+          }
+        });
+        $('#modalPrimary').modal('hide');
+        setTimeout(function () {
+          this.props.updateToModalCont({
+            posts: listOfPosts,
+            curPost: undefined,
+            flagToDelete: false
+          }, {
+            config: {
+              method: 'delete'
+            }
+          });
+        }.bind(this), 150);
       }.bind(this)).catch(function (err) {
         alert(err.message);
       });
     }
   },
   handleCancel: function () {
-    $('#myModal').modal('hide');
+    if (this.props.flagToDeleteForModalCont == true) {
+      $('#modalPrimary').modal('hide');
+      setTimeout(function () {
+        this.props.updateToModalCont({
+          posts: this.props.listToModalCont,
+          curPost: undefined,
+          flagToDelete: false
+        }, {
+            config: {
+              method: 'delete'
+            }
+        });
+      }.bind(this), 150);
+    } else {
+      $('#modalPrimary').modal('hide');
+    }
   },
   render: function () {
     return (
       <Modal
+        flagToDeleteForModalComp={this.props.flagToDeleteForModalCont}
         saveChangeClicked={this.handleSaveButton}
         changedTitle={this.handleTitleChange}
         changedBody={this.handleBodyChange}

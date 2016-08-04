@@ -8,6 +8,7 @@ function Table (props) {
       <TableHead />
       <TableBody
         editButtonToTbodyComp={props.editButtonToTableComp}
+        deleteButtonToTbodyComp={props.deleteButtonToTableComp}
         mouseOveredToTableBodyComp={props.mouseOveredToTableComp}
         listToTbodyComp={props.listToTableComp} />
     </table>
