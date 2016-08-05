@@ -13,18 +13,18 @@ module.exports.disconnect = function(callback) {
   callback();
 }
 
-module.exports.create = function (title, body, callback) {
-  client.query("insert into posts(title, body) values($1, $2) returning id", [title, body]).then(function (id) {
+module.exports.create = function (title, body, createdAt, modifiedAt, callback) {
+  client.query("insert into posts(title, body, created_at, modified_at) values($1, $2, $3, $4) returning id", [title, body, createdAt, modifiedAt]).then(function (id) {
     callback(null, id)
   }).catch(function (err) {
     callback(err);
   });
 }
 
-module.exports.update = function (key, title, body, callback) {
+module.exports.update = function (key, title, body, modifiedAt, callback) {
   client.query("select * from posts where id=$1", [key]).then(function (data) {
     if (data.length !== 0) {
-      client.query("update posts set title=$1, body=$2 where id=$3  returning id", [title, body, key]).then(function (id) {
+      client.query("update posts set title=$1, body=$2, modified_at=$3 where id=$4  returning id", [title, body, modifiedAt, key]).then(function (id) {
         callback(null, id);
       }).catch(function (err) {
         callback(err);
@@ -65,11 +65,13 @@ module.exports.destroy = function (key, callback) {
   });
 }
 
+//maybe it is not correctly, convert date in api module
+
 module.exports.titles = function (callback) {
   var titles = [];
-  client.any("select id, title, body from posts").then(function (data) {
+  client.any("select id, title, body, created_at, modified_at from posts").then(function (data) {
     data.forEach(function(row) {
-      titles.push({id: row.id, title: row.title, body: row.body});
+      titles.push({id: row.id, title: row.title, body: row.body, createdAt: row.created_at, modifiedAt:row.modified_at});
     });
   }).catch(function (err) {
     callback(err);

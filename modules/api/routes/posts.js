@@ -23,7 +23,7 @@ router.get('/posts', function (req, res, next) {
       responseData = JSON.stringify(data);
       res.writeHead(200, {
         "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
+        "Content-Type": "application/x-www-form-urlencoded"
       });
       res.end(responseData);
     }
@@ -46,7 +46,7 @@ router.get('/posts/:id', function (req, res, next) {
       responseData = JSON.stringify(data[0]);
       res.writeHead(200, {
         "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
+        "Content-Type": "application/x-www-form-urlencoded"
       });
       res.end(responseData);
     }
@@ -55,7 +55,7 @@ router.get('/posts/:id', function (req, res, next) {
 
 // create post
 router.post('/posts', function (req, res, next) {
-  posts.create(req.body.title, req.body.body, function (err, data) {
+  posts.create(req.body.title, req.body.body, req.body.createdAt, req.body.modifiedAt, function (err, data) {
     var responseData = undefined;
     var id = undefined;
     if (err) {
@@ -85,6 +85,7 @@ router.post('/posts', function (req, res, next) {
             "Content-Type": "application/x-www-form-urlencoded",
             "Location": "localhost:3000/api/posts/" + id
           });
+          console.log(responseData);
           res.end(responseData);
         }
       });
@@ -124,7 +125,7 @@ router.options('/posts/:id', function (req, res, next) {
 // });
 
 router.put('/posts/:id', function (req, res, next) {
-  posts.update(req.params.id, req.body.title, req.body.body, function (err, data) {
+  posts.update(req.params.id, req.body.title, req.body.body, req.body.modifiedAt, function (err, data) {
     var responseData = undefined;
     if (err) {
       var errorMessage = {

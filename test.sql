@@ -1,10 +1,10 @@
 
-INSERT INTO posts (title, body) VALUES ('Strange bug ever in V8', 'Some info...1');
+INSERT INTO posts (title, body, created_at, modified_at) VALUES ('Strange bug ever in V8', 'Some info...1', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
 
-INSERT INTO posts (title, body) VALUES ('Tracing de-optimizations in NodeJS', 'Some info...2');
+INSERT INTO posts (title, body, created_at, modified_at) VALUES ('Tracing de-optimizations in NodeJS', 'Some info...2', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
 
-INSERT INTO posts (title, body) VALUES ('How to start contributing in NodeJS?', 'Some info...3');
+INSERT INTO posts (title, body, created_at, modified_at) VALUES ('How to start contributing in NodeJS?', 'Some info...3', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
 
-INSERT INTO posts (title, body) VALUES ('Profiling NodeJS applications', 'Some info...4');
+INSERT INTO posts (title, body, created_at, modified_at) VALUES ('Profiling NodeJS applications', 'Some info...4', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
 
-INSERT INTO posts (title, body) VALUES ('How V8 optimises JavaScript code?', 'Some info...5');
+INSERT INTO posts (title, body, created_at, modified_at) VALUES ('How V8 optimises JavaScript code?', 'Some info...5', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
