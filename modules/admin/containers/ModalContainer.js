@@ -2,28 +2,36 @@ var React = require('react');
 var Modal = require('../components/Modal');
 var Link = require('react-router').Link;
 var loadData = require('../utils/loadData');
+var converterToLocalDate = require('../utils/converterToLocalDate');
 
 var ModalContainer = React.createClass({
   getInitialState: function () {
     return {
       id: '',
       title: '',
-      body: ''
+      body: '',
+      createdAt: '',
+      modifiedAt: ''
     }
   },
+  //for autocomplete fields in modal window, when clicking on edit, state of modal component are changed
+
   componentWillReceiveProps: function (nextProps) {
-    // console.log(nextProps);
     if (nextProps.curPostForModalCont) {
       this.setState ({
         id: nextProps.curPostForModalCont.id,
         title: nextProps.curPostForModalCont.title,
-        body: nextProps.curPostForModalCont.body
+        body: nextProps.curPostForModalCont.body,
+        createdAt: this.state.createdAt,
+        modifiedAt: this.state.modifiedAt,
       });
-    } else if (nextProps.curPostForModalCont == undefined) {
+    } else if (nextProps.curPostForModalCont === undefined) {
       this.setState ({
         id: '',
         title: '',
-        body: ''
+        body: '',
+        createdAt: '',
+        modifiedAt: ''
       });
     }
   },
@@ -41,18 +49,31 @@ var ModalContainer = React.createClass({
       var dataForSendToServer = undefined;
       var title = this.state.title;
       var body = this.state.body;
-      dataForSendToServer = "title=" + title + "&body=" + body; //issue with axios
+      var now = new Date ();
+      var isoDate = new Date(now).toISOString();
+      var createdAt = isoDate;
+      var modifiedAt = isoDate;
+      dataForSendToServer = "title=" + title + "&body=" + body + "&createdAt=" + createdAt + "&modifiedAt=" + modifiedAt; //issue with axios
       loadData.createPost(dataForSendToServer).then(function (returnedData) {
+        converterToLocalDate.create(returnedData.data);
         this.setState({
           id: returnedData.data.id,
           title: returnedData.data.title,
-          body: returnedData.data.body
+          body: returnedData.data.body,
+          createdAt:  returnedData.data['created_at'],
+          modifiedAt: returnedData.data['modified_at']
         });
-        $('#modalPrimary').modal('hide');
-        this.props.updateToModalCont(returnedData.data, returnedData);
-      }.bind(this)).catch(function (err) {
-        alert(err.message);
-      });
+        // console.log(this.state);
+      //   $('#modalPrimary').modal('hide');
+      //   this.props.updateToModalCont(returnedData.data, returnedData);
+      // }.bind(this)).catch(function (err) {
+      //   alert(err.message);
+      // });
+      $('#modalPrimary').modal('hide');
+      this.props.updateToModalCont(this.state, {config: {method: 'post'}});
+    }.bind(this)).catch(function (err) {
+      alert(err.message);
+    });
 
       //for update operations
 
@@ -61,10 +82,21 @@ var ModalContainer = React.createClass({
       var id = this.props.curPostForModalCont.id;
       var title = this.state.title;
       var body = this.state.body;
-      dataForSendToServer = "id=" + id + "&title=" + title + "&body=" + body; //issue with axios
+      var now = new Date ();
+      var isoDate = new Date(now).toISOString();
+      var modifiedAt = isoDate;
+      dataForSendToServer = "id=" + id + "&title=" + title + "&body=" + body + "&modifiedAt=" + modifiedAt; //issue with axios
       loadData.editPost(id, dataForSendToServer).then(function (returnedData) {
+        converterToLocalDate.update(returnedData.data['modified_at']);
+          this.setState({
+            id: returnedData.data.id,
+            title: returnedData.data.title,
+            body: returnedData.data.body,
+            createdAt:  returnedData.data['created_at'],
+            modifiedAt: returnedData.data['modified_at']
+          });
         $('#modalPrimary').modal('hide');
-        this.props.updateToModalCont(returnedData.data, returnedData);
+        this.props.updateToModalCont(this.state, returnedData);
       }.bind(this)).catch(function (err) {
         alert(err.message);
       });

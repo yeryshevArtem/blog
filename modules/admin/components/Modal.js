@@ -17,7 +17,7 @@ function Modal (props) {
                   <p>If you click on the delete, all data will be deleted. Are you sure ?</p>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-primary" onClick={props.saveChangeClicked}>Save changes</button>
+                  <button type="button" className="btn btn-primary" onClick={props.saveChangeClicked}>Delete post</button>
                   <button type="button" className="btn btn-default" data-dismiss="modal" onClick={props.cancel}>Close</button>
                 </div>
               </div> :

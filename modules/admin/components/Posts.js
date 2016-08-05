@@ -6,7 +6,6 @@ var ModalContainer = require('../containers/ModalContainer');
 var Table = require('./Table');
 
 function Posts (props) {
-  // console.log(props);
   return (
     <MainContainer>
       <Navbar />
@@ -17,7 +16,7 @@ function Posts (props) {
         updateToModalCont={props.update} />
       <div className='col-sm-12' style={styles.space}>
         <button type="button" className="btn btn-primary btn-create" onClick={props.clickedCreate}>
-          Create
+          New post
         </button>
       </div>
       <div className='col-sm-12' style={styles.space}>

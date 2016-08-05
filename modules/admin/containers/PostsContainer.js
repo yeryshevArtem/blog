@@ -1,6 +1,7 @@
 var React = require('react');
 var Posts = require('../components/Posts');
 var loadData = require('../utils/loadData');
+var converterToLocalDate = require('../utils/converterToLocalDate');
 var ModalContainer = require('./ModalContainer');
 
 var PostsContainer = React.createClass({
@@ -13,6 +14,7 @@ var PostsContainer = React.createClass({
   },
   componentDidMount: function () {
     loadData.getPosts().then(function (result) {
+      converterToLocalDate.install(result.data);
       this.setState({
         posts: result.data
       });
@@ -71,6 +73,7 @@ var PostsContainer = React.createClass({
       this.state.posts.forEach(function (post, index) {
         if (post.id == config.id) {
           this.state.posts[index] = config;
+          converterToLocalDate.install(this.state.posts);
           this.setState({
             posts: this.state.posts,
             curPost: undefined

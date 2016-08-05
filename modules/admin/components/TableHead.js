@@ -6,6 +6,8 @@ function TableHead () {
       <tr>
         <th>ID</th>
         <th>Title</th>
+        <th>Created at</th>
+        <th>Modified at</th>
       </tr>
     </thead>
   )
