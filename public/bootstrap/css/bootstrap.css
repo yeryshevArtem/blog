@@ -114,6 +114,7 @@ optgroup,
 select,
 textarea {
   margin: 0;
+  margin-left: 10px; /*added */
   font: inherit;
   color: inherit;
 }

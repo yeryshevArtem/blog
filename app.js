@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var index = require('./modules/app/routes/index');
 var post = require('./modules/app/routes/post');
 var login = require('./modules/app/routes/login');
+var postsAdmin = require('./modules/admin/routes/postsAdmin');
 var posts = require('./modules/api/routes/posts');
 var debug = require('debug')('app4');
 
@@ -44,7 +45,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/modules/app/public')));
+// app.use(express.static(path.join(__dirname, '/modules/app/public')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/jquery", express.static(__dirname + '/public/jquery'));
+app.use("/bootstrap", express.static(__dirname + '/public/bootstrap'));
+app.use("/styles",  express.static(__dirname + '/public/stylesheets'));
+app.use("/scripts", express.static(__dirname + '/public/javascripts'));
+app.use("/images",  express.static(__dirname + '/public/images'));
 
 //for app module
 app.use('/', index);
@@ -55,7 +62,8 @@ app.use('/', login);
 app.use('/api', posts);
 
 //for admin module
-// app.use('/admin');
+app.use('/admin', postsAdmin);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

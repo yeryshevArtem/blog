@@ -1,23 +1,14 @@
 <% include top %>
-<h1>Welcome</h1>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <td>ID</td>
-      <td>Title</td>
-    </tr>
-  </thead>
-  <tbody>
-    <%
+  <%
     if (posts) {
       posts.forEach(function(post) {
-        %><tr id=<%= post.id %>>
-          <td><%= post.id %></td>
-          <td><%= post.title %></td>
-        </tr><%
+        post.createdAt = post.createdAt.toDateString();
+        %><article class="post" id=<%= post.id %>>
+          <h1><%= post.title %></h1>
+          <p><%= post.createdAt %></p>
+          <hr>
+        </article><%
       });
     }
-    %>
-  </tbody>
-</table>
+  %>
 <% include bottom %>

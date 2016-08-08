@@ -85,7 +85,6 @@ router.post('/posts', function (req, res, next) {
             "Content-Type": "application/x-www-form-urlencoded",
             "Location": "localhost:3000/api/posts/" + id
           });
-          console.log(responseData);
           res.end(responseData);
         }
       });

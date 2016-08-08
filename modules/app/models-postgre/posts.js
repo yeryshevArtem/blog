@@ -67,9 +67,9 @@ module.exports.destroy = function (key, callback) {
 
 module.exports.titles = function (callback) {
   var titles = [];
-  client.any("select id, title from posts").then(function (data) {
+  client.any("select id, title,  created_at from posts").then(function (data) {
     data.forEach(function(row) {
-      titles.push({id: row.id, title: row.title});
+      titles.push({id: row.id, title: row.title, createdAt: row.created_at});
     });
   }).catch(function (err) {
     callback(err);
