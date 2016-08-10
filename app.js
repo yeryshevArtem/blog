@@ -3,6 +3,9 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var pg = require('pg');
+var session = require('express-session');
+var pgSession = require('connect-pg-simple')(session); //session store
 var bodyParser = require('body-parser');
 var index = require('./modules/app/routes/index');
 var post = require('./modules/app/routes/post');
@@ -17,22 +20,31 @@ var params = {
   port: 8000,
   ip: '192.168.33.11'
 };
-
-var modelForAppModule = require('./modules/app/models-postgre/posts');
-modelForAppModule.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
+//posts model for app module
+var modelForAppModulePosts = require('./modules/app/models-postgre/posts');
+modelForAppModulePosts.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
   if (err) throw err;
 });
 
-[index, post, login].forEach(function (router) {
-  router.configure({model: modelForAppModule});
+[index, post].forEach(function (router) {
+  router.configure({model: modelForAppModulePosts});
 });
 
-var modelForApiModule = require('./modules/api/models-postgre/posts');
-modelForApiModule.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
+//users model for app module
+var modelForAppModuleUsers = require('./modules/app/models-postgre/users');
+modelForAppModuleUsers.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
   if (err) throw err;
 });
 
-posts.configure({model: modelForApiModule});
+login.configure({model: modelForAppModuleUsers});
+
+//posts model for api module
+var modelForApiModulePosts = require('./modules/api/models-postgre/posts');
+modelForApiModulePosts.connect("postgres://root:12345678@localhost:5432/blog", function (err) {
+  if (err) throw err;
+});
+
+posts.configure({model: modelForApiModulePosts});
 
 // view engine setup
 app.set('port', process.env.PORT || params.port);
@@ -45,6 +57,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  store: new pgSession({
+    pg : pg,
+    conString : "postgres://root:12345678@localhost:5432/blog",
+  }),
+  secret: "bruceWayne",
+  resave: true,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }
+}));
+
 // app.use(express.static(path.join(__dirname, '/modules/app/public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/jquery", express.static(__dirname + '/public/jquery'));

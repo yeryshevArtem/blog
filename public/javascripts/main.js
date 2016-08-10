@@ -1,6 +1,7 @@
 window.onload = function () {
   var login = document.getElementsByClassName('btn-login')[0];
   var article = document.getElementsByClassName('post');
+  console.log(article);
   for (var i=0; i < article.length; i++) {
     article[i].addEventListener('mouseover', function (event) {
        event.target.style.cursor = "pointer";
