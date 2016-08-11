@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pg-promise": "*",
-    "connect-pg-simple": "*"
+    "async": "^2.0.1",
+    "connect-pg-simple": "*",
+    "pg-promise": "*"
   }
 }
