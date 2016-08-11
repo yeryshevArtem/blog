@@ -14,8 +14,8 @@ module.exports.disconnect = function(callback) {
 }
 
 module.exports.create = function (username, email, saltPassword, hashedPassword, createdAt, modifiedAt, callback) {
-  client.query("insert into users(username, email, salt_password, hashed_password, created_at, modified_at) values($1, $2, $3, $4, $5, $6) returning id", [username, email, saltPassword, hashedPassword, createdAt, modifiedAt]).then(function (id) {
-    callback(null, id)
+  client.query("insert into users(username, email, salt_password, hashed_password, created_at, modified_at) values($1, $2, $3, $4, $5, $6) returning username, id", [username, email, saltPassword, hashedPassword, createdAt, modifiedAt]).then(function (data) {
+    callback(null, data);
   }).catch(function (err) {
     callback(err);
   });
@@ -23,11 +23,15 @@ module.exports.create = function (username, email, saltPassword, hashedPassword,
 
 module.exports.read = function (username, callback) {
   client.query("select * from users where username=$1", [username]).then(function (data) {
-    if (data.length !== 0) {
-      callback(null, data);
-    } else {
-      throw err;
-    }
+    callback(null, data);
+  }).catch(function (err) {
+    callback(err);
+  });
+}
+
+module.exports.findById = function (id, callback) {
+  client.query("select * from users where id=$1", [id]).then(function (data) {
+    callback(null, data);
   }).catch(function (err) {
     callback(err);
   });
