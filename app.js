@@ -10,6 +10,8 @@ var bodyParser = require('body-parser');
 var index = require('./modules/app/routes/index');
 var post = require('./modules/app/routes/post');
 var login = require('./modules/app/routes/login');
+var logout = require('./modules/app/routes/logout');
+var loadUsers = require('./modules/app/middleware/loadUsers');
 var postsAdmin = require('./modules/admin/routes/postsAdmin');
 var posts = require('./modules/api/routes/posts');
 var debug = require('debug')('app4');
@@ -76,16 +78,19 @@ app.use("/scripts", express.static(__dirname + '/public/javascripts'));
 app.use("/images",  express.static(__dirname + '/public/images'));
 
 //for app module
+
+//WE NEED TO GET information ABOUT HAVE A USER OR NOT
+app.use(loadUsers);
 app.use('/', index);
 app.use('/', post);
 app.use('/', login);
+app.use('/', logout);
 
 //for api module
 app.use('/api', posts);
 
 //for admin module
 app.use('/admin', postsAdmin);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -98,13 +103,24 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
+
+
+//There inserted all errors from other middleware
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('showerror', {
-      message: err.message,
-      error: err
-    });
+    console.log('BB');
+    if (err.status === 403) {
+      res.statusCode = err.status;
+      res.end(JSON.stringify(err.message));
+    } else {
+      res.statusCode = err.status;
+      res.end(JSON.stringify(err.message));
+      // res.status(err.status || 500);
+      // res.render('error', {
+      //   message: err.message,
+      //   error: err
+      // });
+    }
   });
 }
 
