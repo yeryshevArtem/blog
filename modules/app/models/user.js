@@ -29,10 +29,9 @@ User.prototype.checkPassword = function (password) {
   }
 };
 
-User.authorize = function (username, password, email, users, callback) {
+User.authorize = function (username, password, users, callback) {
   var username = username;
   var password = password;
-  var email = email;
   var users = users; //variable for interface from model database - users
   var User = this;
   async.waterfall([
@@ -50,22 +49,30 @@ User.authorize = function (username, password, email, users, callback) {
         if (User.prototype.checkPassword.call(user[0], password)) {
           callback(null, user);
         } else {
-          return callback(new AuthError("Your password may be are not be valid"));
+          return callback(new AuthError("Your password may be are not be valid!"));
         }
       } else { //user has not been registered and we must to register him
-        var user = new User(username, password, email);
-        // user.password = user.encryptPassword(user.password);
-        users.create(user.username, user.email, user.salt, user.hashed_password, user.createdAt, user.modifiedAt, function (err, data) {
-          if (err) {
-            return callback(err);
-          } else {
-            callback(null, data);
-          }
-        });
+        return callback(new AuthError("You are not registered!"));
       }
     }
   ], callback);
-}
+};
+
+User.register = function (username, password, email, users, callback) {
+  var username = username;
+  var password = password;
+  var email = email;
+  var users = users; //variable for interface from model database - users
+  var User = this;
+  var user = new User(username, password, email);
+  users.create(user.username, user.email, user.salt, user.hashed_password, user.createdAt, user.modifiedAt, function (err, data) {
+    if (err) {
+      return callback(err);
+    } else {
+      return callback(null, data);
+    }
+  });
+};
 
 exports.User = User;
 

@@ -11,6 +11,10 @@ a {
   margin-left: 10px;
 }
 
+.authorization-register {
+  margin-left: 0px;
+}
+
 h1 {
   text-align: left;
 }
@@ -18,11 +22,7 @@ h1 {
 .facebook {
   margin: 12% auto 30px auto;
   padding: 0 20px 0 0;
-  width: 500px;
-}
-
-.authorization {
-  margin-left: 0px;
+  width: 50%;
 }
 
 .wrapper {
@@ -31,4 +31,8 @@ h1 {
 
 .navbar-header {
   padding-left: 15%;
+}
+
+div.facebook > article > h1 {
+  padding-bottom: 5%;
 }

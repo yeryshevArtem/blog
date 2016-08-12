@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var index = require('./modules/app/routes/index');
 var post = require('./modules/app/routes/post');
 var login = require('./modules/app/routes/login');
+var register = require('./modules/app/routes/register');
 var logout = require('./modules/app/routes/logout');
 var loadUsers = require('./modules/app/middleware/loadUsers');
 var postsAdmin = require('./modules/admin/routes/postsAdmin');
@@ -38,7 +39,10 @@ modelForAppModuleUsers.connect("postgres://root:12345678@localhost:5432/blog", f
   if (err) throw err;
 });
 
-login.configure({model: modelForAppModuleUsers});
+[login, register].forEach(function (router) {
+  router.configure({model: modelForAppModuleUsers});
+});
+// login.configure({model: modelForAppModuleUsers});
 
 //posts model for api module
 var modelForApiModulePosts = require('./modules/api/models-postgre/posts');
@@ -78,12 +82,11 @@ app.use("/scripts", express.static(__dirname + '/public/javascripts'));
 app.use("/images",  express.static(__dirname + '/public/images'));
 
 //for app module
-
-//WE NEED TO GET information ABOUT HAVE A USER OR NOT
 app.use(loadUsers);
 app.use('/', index);
 app.use('/', post);
 app.use('/', login);
+app.use('/', register);
 app.use('/', logout);
 
 //for api module
@@ -104,11 +107,9 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 
-
 //There inserted all errors from other middleware
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    console.log('BB');
     if (err.status === 403) {
       res.statusCode = err.status;
       res.end(JSON.stringify(err.message));

@@ -11,17 +11,18 @@ module.exports.configure = function (params) {
   users = params.model;
 }
 
-router.get('/login', function (req, res, next) {
-    res.render('login', {
-      title: 'Welcome',
-      user: res.locals.user
-    });
+router.get('/register', function (req, res, next) {
+  res.render('register', {
+    title: "Sign Up"
   });
+});
 
-router.post('/login', function (req, res, next) {
+router.post('/register', function (req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
-  User.authorize(username, password, users, function (err, user) {
+  var email = req.body.email;
+
+  User.register(username, password, email, users, function (err, user) {
     if (err) {
       if (err instanceof AuthError) {
         return next(new HttpError(403, err.message));
@@ -29,7 +30,7 @@ router.post('/login', function (req, res, next) {
         return next(err);
       }
     }
-    req.session.user = user[0].id;
+    req.session.user = user[0].id
     res.statusCode = 200;
     res.end(JSON.stringify(user[0]));
   });
