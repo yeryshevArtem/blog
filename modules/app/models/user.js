@@ -49,10 +49,10 @@ User.authorize = function (username, password, users, callback) {
         if (User.prototype.checkPassword.call(user[0], password)) {
           callback(null, user);
         } else {
-          return callback(new AuthError("Your password may be are not be valid!"));
+          return callback(new AuthError("Your password may be are not valid!"));
         }
       } else { //user has not been registered and we must to register him
-        return callback(new AuthError("You are not registered!"));
+        return callback(new AuthError("Your username may be are not valid. Maybe you are not registered!"));
       }
     }
   ], callback);

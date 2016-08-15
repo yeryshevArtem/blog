@@ -23,6 +23,7 @@ window.onload = function () {
       }
     });
   }
+
   if (login) {
     login.addEventListener('click', function (event) {
       window.location.href = "/login";
@@ -44,6 +45,8 @@ window.onload = function () {
 
     var usernameVal = undefined;
     var passwordVal = undefined;
+    var containerForRenderErrorUsername = undefined;
+    var containerForRenderErrorPassword = undefined;
 
     forms.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -54,6 +57,7 @@ window.onload = function () {
         username: usernameVal,
         password: passwordVal
       };
+
       $.ajax({
         url: '/login',
         method: 'POST',
@@ -66,6 +70,13 @@ window.onload = function () {
               formGroupForPassword.classList.remove("has-error");
               formGroupForPassword.classList.add("has-success");
               passwordDOM.nextSibling.nextSibling.innerHTML = "";
+              containerForRenderErrorPassword.style.visibility = "hidden";
+            }
+            if (formGroupForUsername.classList.contains("has-error")) {
+              formGroupForUsername.classList.remove("has-error");
+              formGroupForUsername.classList.add("has-success");
+              usernameDOM.nextSibling.nextSibling.innerHTML = "";
+              containerForRenderErrorUsername.style.visibility = "hidden";
             }
             formGroupForUsername.classList.add("has-success");
             formGroupForPassword.classList.add("has-success");
@@ -82,30 +93,60 @@ window.onload = function () {
             }, 2000);
           },
           403: function (jqXHR) {
-            var error = JSON.parse(jqXHR.responseText);
+          var error = JSON.parse(jqXHR.responseText);
 
-            if (!formGroupForPassword.classList.contains("has-error")) {
-              formGroupForPassword.classList.add("has-error");
-              var span = document.getElementById('helpBlock2');
-              var warningText = document.createTextNode("" + error);
-              span.appendChild(warningText);
-            }
+            if (error.indexOf("password") != -1) {
+              containerForRenderErrorPassword = document.getElementsByClassName('help-block-password')[0];
+              if (formGroupForUsername.classList.contains("has-error")) {
+                formGroupForUsername.classList.remove("has-error");
+                usernameDOM.nextSibling.nextSibling.innerHTML = "";
+                containerForRenderErrorUsername.style.visibility = "hidden";
+              }
+              if (!formGroupForPassword.classList.contains("has-error")) {
+                formGroupForPassword.classList.add("has-error");
+                var warningText = document.createTextNode("" + error);
+                containerForRenderErrorPassword.appendChild(warningText);
+                containerForRenderErrorPassword.style.visibility = "visible";
+              } else {
+                containerForRenderErrorPassword.style.visibility = "visible";
+              }
+              passwordDOM.addEventListener('focus', function () {
+                if (formGroupForPassword.classList.contains("has-error")) {
+                  containerForRenderErrorPassword.style.visibility = "hidden";
+                }
+              });
+              passwordDOM.addEventListener('blur', function () {
+                if (formGroupForPassword.classList.contains("has-error")) {
+                  containerForRenderErrorPassword.style.visibility = "visible";
+                }
+              });
 
-            passwordDOM.addEventListener('focus', function () {
+            } else if (error.indexOf("username") != -1) {
               if (formGroupForPassword.classList.contains("has-error")) {
                 formGroupForPassword.classList.remove("has-error");
                 passwordDOM.nextSibling.nextSibling.innerHTML = "";
+                containerForRenderErrorPassword.style.visibility = "hidden";
               }
-            });
-
-            // passwordDOM.addEventListener('blur', function () {
-            //   if (!formGroupForPassword.classList.contains("has-error")) {
-            //     formGroupForPassword.classList.add("has-error");
-            //     var span = document.getElementById('helpBlock2');
-            //     var warningText = document.createTextNode("" + error);
-            //     span.appendChild(warningText);
-            //   }
-            // });
+              containerForRenderErrorUsername = document.getElementsByClassName('help-block-username')[0];
+              if (!formGroupForUsername.classList.contains("has-error")) {
+                formGroupForUsername.classList.add("has-error");
+                var warningText = document.createTextNode("" + error);
+                containerForRenderErrorUsername.appendChild(warningText);
+                containerForRenderErrorUsername.style.visibility = "visible";
+              } else {
+                containerForRenderErrorUsername.style.visibility = "visible";
+              }
+              usernameDOM.addEventListener('focus', function () {
+                if (formGroupForUsername.classList.contains("has-error")) {
+                  containerForRenderErrorUsername.style.visibility = "hidden";
+                }
+              });
+              usernameDOM.addEventListener('blur', function () {
+                if (formGroupForUsername.classList.contains("has-error")) {
+                  containerForRenderErrorUsername.style.visibility = "visible";
+                }
+              });
+            }
           }
         }
       });
