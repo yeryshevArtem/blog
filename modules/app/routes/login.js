@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var User = require('../models/user').User;
 var HttpError = require('../error').HttpError;
 var AuthError = require('../models/user').AuthError;
+var path = require('path');
 
 var users = undefined;
 module.exports = router;
@@ -29,8 +30,11 @@ router.post('/login', function (req, res, next) {
         return next(err);
       }
     }
+    if (user[0].username === "bruce_wayne") {
+      req.session.admin = user[0].username;
+    }
     req.session.user = user[0].id;
-    res.statusCode = 200;
+    res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(JSON.stringify(user[0]));
   });
 });

@@ -17,6 +17,8 @@ var postsAdmin = require('./modules/admin/routes/postsAdmin');
 var posts = require('./modules/api/routes/posts');
 var debug = require('debug')('app4');
 
+var checkAuth = require('./modules/app/middleware/checkAuth');
+
 var app = express();
 
 var params = {
@@ -93,7 +95,7 @@ app.use('/', logout);
 app.use('/api', posts);
 
 //for admin module
-app.use('/admin', postsAdmin);
+app.use('/admin', checkAuth, postsAdmin); //checking on admin
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -114,13 +116,13 @@ if (app.get('env') === 'development') {
       res.statusCode = err.status;
       res.end(JSON.stringify(err.message));
     } else {
-      res.statusCode = err.status;
-      res.end(JSON.stringify(err.message));
-      // res.status(err.status || 500);
-      // res.render('error', {
-      //   message: err.message,
-      //   error: err
-      // });
+      // res.statusCode = err.status;
+      // res.end(JSON.stringify(err.message));
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
     }
   });
 }

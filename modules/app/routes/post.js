@@ -26,7 +26,6 @@ router.get('/post/:id', function (req, res) {
         title: post[0].title,
         post: post[0],
         user: res.locals.user
-        // userId: req.session.user
       });
     }
   });

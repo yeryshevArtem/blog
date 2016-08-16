@@ -45,13 +45,13 @@ User.authorize = function (username, password, users, callback) {
       });
     },
     function (user, callback) {
-      if (user.length !== 0) { //user already has been registered
+      if (user.length !== 0) {
         if (User.prototype.checkPassword.call(user[0], password)) {
           callback(null, user);
         } else {
           return callback(new AuthError("Your password may be are not valid!"));
         }
-      } else { //user has not been registered and we must to register him
+      } else {
         return callback(new AuthError("Your username may be are not valid. Maybe you are not registered!"));
       }
     }
