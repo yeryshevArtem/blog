@@ -454,7 +454,7 @@ window.onload = function () {
             addSuccessClass([formGroupForEmail, formGroupForUsername, formGroupForPassword])
 
             // handler modal window
-            
+
             $('#myModalRegister').on('show.bs.modal', function() {
               var $modal = $(this);
               $modal.find('.modal-body > p').html("You are registered. Welcome to my blog, dear " + data.username + "!");

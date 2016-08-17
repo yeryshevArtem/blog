@@ -1,16 +1,62 @@
-body {
-  /*background-color: #000000 !important;*/
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+* {
+margin: 0;
 }
 
-/*.row {
-  color: #FFFFFF !important;
-  background-color: #303030 !important;
-}*/
+html, body {
+height: 100%;
+}
+
+body {
+  font-family: 'Pacifico', cursive !important;
+  background-color: #000000 !important;
+  height: 100%;
+  width: 100%;
+}
+
+.row {
+  color: #9D9D9D !important;
+  background-color: #000000 !important;
+}
+
+hr {
+  color: #9D9D9D !important;
+  width: 70%;
+}
+
+a {
+  color: #9D9D9D !important;
+}
+
+.slide {
+  padding-top: 0px !important;
+  width: 800px !important;
+  margin-left: 20% !important;
+}
+
+#main {
+  width: 61% !important;
+  padding-left: 5%;
+}
+
+section {
+  min-height: 50%;
+  height: auto !important;
+  height: 50%;
+  /*margin: 0 auto -4em;*/
+}
+
+footer, .push {
+  height: 4em;
+}
+
+footer, .push {
+  clear: both;
+  padding-left: 50%;
+}
 
 .img-for-animation {
-  width: 847px;
+  width: 800px;
+  height: 500px;
 }
 
 a {
@@ -25,8 +71,32 @@ a {
   margin-left: 0px;
 }
 
+p {
+  color: #2C6D59;
+}
+
+.distinguisher {
+  color: #2C6D59 !important; /*green color*/
+}
+
+.navbar-username {
+  color: #2C6D59 !important; /*green color*/
+}
+
 h1 {
   text-align: left;
+  padding-bottom: 5%;
+}
+
+.header-of-post {
+  padding-left: 5%;
+  padding-bottom: 0;
+}
+
+.date-of-post {
+  padding-left: 5%;
+  padding-top: 2%;
+  padding-bottom: 5%;
 }
 
 .facebook {
@@ -35,15 +105,25 @@ h1 {
   width: 50%;
 }
 
-.wrapper {
-  width: 70% !important;
+.postview {
+  margin: 12% auto 30px auto;
+  padding: 0 20px 0 0;
+  width: 75%;
+}
+
+.post {
+  padding-left: 10%;
+}
+
+header {
+  width: 100%;
 }
 
 .navbar-header {
   padding-left: 15%;
 }
 
-div.facebook > article > h1 {
+.facebook > h1 {
   padding-bottom: 5%;
 }
 
@@ -74,4 +154,16 @@ div.facebook > article > h1 {
 .help-block-email {
   width: 200px;
   height: 45px;
+}
+
+.help-block-password {
+  font-family: 'Kavivanar', cursive;
+}
+
+.help-block-username {
+  font-family: 'Kavivanar', cursive;
+}
+
+.help-block-email {
+  font-family: 'Kavivanar', cursive;
 }

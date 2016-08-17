@@ -1,9 +1,18 @@
 <% include top %>
-<article>
-  <h1><%= post.title %></h1>
-  <section>
-    <h2></h2>
-    <p><%= post.body %></p>
+<% include navbar%>
+  <section class="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <article class="postview">
+            <h1><%= post.title %></h1>
+            <section>
+              <h2></h2>
+              <p><%= post.body %></p>
+            </section>
+          </article>
+        </div>
+      </div>
+    </div>
   </section>
-</article>
 <% include bottom %>
