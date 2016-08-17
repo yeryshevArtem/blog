@@ -2,6 +2,7 @@ var express = require('express');
 var crypto = require('crypto');
 var async = require('async');
 var util = require('util');
+var HttpError = require('../error').HttpError;
 
 function User (username, password, email) {
   var now = new Date ();
@@ -49,7 +50,7 @@ User.authorize = function (username, password, users, callback) {
         if (User.prototype.checkPassword.call(user[0], password)) {
           callback(null, user);
         } else {
-          return callback(new AuthError("Your password may be are not valid!"));
+          return callback(new AuthError("Incorrect password. Check the right of your data!"));
         }
       } else {
         return callback(new AuthError("Your username may be are not valid. Maybe you are not registered!"));
@@ -67,7 +68,7 @@ User.register = function (username, password, email, users, callback) {
   var user = new User(username, password, email);
   users.create(user.username, user.email, user.salt, user.hashed_password, user.createdAt, user.modifiedAt, function (err, data) {
     if (err) {
-      return callback(err);
+      return callback(new HttpError(409, "The user with this username has been registered! Please, input another username."));
     } else {
       return callback(null, data);
     }
