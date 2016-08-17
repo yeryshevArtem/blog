@@ -1,6 +1,16 @@
 body {
+  /*background-color: #000000 !important;*/
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+/*.row {
+  color: #FFFFFF !important;
+  background-color: #303030 !important;
+}*/
+
+.img-for-animation {
+  width: 847px;
 }
 
 a {
@@ -37,7 +47,7 @@ div.facebook > article > h1 {
   padding-bottom: 5%;
 }
 
-.help-block-username {
+.help-block {
   visibility: hidden;
   font-size: 80%;
   border: 1px solid;
@@ -45,26 +55,23 @@ div.facebook > article > h1 {
   border-radius: 8px;
   position: absolute;
   overflow: visible;
-  top: 0%; /* Положение от нижнего края */
+  color: #737373;
+  padding: 5px;
+  top: 0%;
   left: 100%;
+}
+
+.help-block-username {
   width: 300px;
   height: 45px;
-  padding: 5px;
-  color: #737373;
 }
 
 .help-block-password {
-  visibility: hidden;
-  font-size: 80%;
-  border: 1px solid;
-  border-color: #C03030;
-  border-radius: 8px;
-  position: absolute;
-  overflow: visible;
-  top: 0%; /* Положение от нижнего края */
-  left: 100%;
   width: 200px;
-  height: 30px;
-  padding: 5px;
-  color: #737373;
+  height: 45px;
+}
+
+.help-block-email {
+  width: 200px;
+  height: 45px;
 }
