@@ -31,6 +31,7 @@ router.post('/login', function (req, res, next) {
       }
     }
     if (user[0].username === "bruce_wayne") {
+      user[0].isAdmin = true; 
       req.session.admin = user[0].username;
     }
     req.session.user = user[0].id;

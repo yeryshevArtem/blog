@@ -50,138 +50,125 @@ window.onload = function () {
 
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      usernameVal = document.getElementById('usernameLogin').value;
-      passwordVal = document.getElementById('passwordLogin').value;
 
-      var dataForSendToServer = {
-        username: usernameVal,
-        password: passwordVal
-      };
+      function addSuccessClass (arrayOfFormGroup) {
+        arrayOfFormGroup.forEach(function (formGroup) {
+          formGroup.classList.add("has-success");
+        });
+      }
 
-      $.ajax({
-        url: '/login',
-        method: 'POST',
-        data: JSON.stringify(dataForSendToServer),
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
+      function deleteErrorClass (formGroupFor, elementOfDOM, containerForRenderError) {
+        formGroupFor.classList.remove("has-error");
+        elementOfDOM.nextSibling.nextSibling.innerHTML = "";
+        containerForRenderError.style.visibility = "hidden";
+      }
+
+      function addErrorClass (formGroupForAddingErrorClass, errMessage) {
+        if (formGroupForAddingErrorClass === formGroupForUsername) {
+          containerForRenderErrorUsername = document.getElementsByClassName('help-block-username')[0];
+
+          if (formGroupForEmail) {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForEmail, emailDOM, containerForRenderErrorEmail);
+            }
+          }
           if (formGroupForPassword.classList.contains("has-error")) {
-            formGroupForPassword.classList.remove("has-error");
-            formGroupForPassword.classList.add("has-success");
-            passwordDOM.nextSibling.nextSibling.innerHTML = "";
-            containerForRenderErrorPassword.style.visibility = "hidden";
+            deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
           }
           if (formGroupForUsername.classList.contains("has-error")) {
-            formGroupForUsername.classList.remove("has-error");
-            formGroupForUsername.classList.add("has-success");
-            usernameDOM.nextSibling.nextSibling.innerHTML = "";
-            containerForRenderErrorUsername.style.visibility = "hidden";
+            deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
           }
-          formGroupForUsername.classList.add("has-success");
-          formGroupForPassword.classList.add("has-success");
 
-          // handler modal window
-          $('#myModalLogin').on('show.bs.modal', function() {
-            var $modal = $(this);
-            $modal.find('.modal-body > p').html("Authentication is successful! Welcome, dear " + data.username + "!");
-          });
-          $('#myModalLogin').modal('show');
-          setTimeout(function () {
-            $('#myModalLogin').modal('hide');
-            if (data.username === "bruce_wayne") {
-              window.location.href = "/admin#/posts";
-            } else {
-              window.location.href = "/";
-            }
-          }, 2000);
-        },
-        error: function (jqXHR) {
-          var error = JSON.parse(jqXHR.responseText);
-          if (error.indexOf("password") != -1) {
-            containerForRenderErrorPassword = document.getElementsByClassName('help-block-password')[0];
+          if (!formGroupForUsername.classList.contains("has-error")) {
+            formGroupForUsername.classList.add("has-error");
+            var warningText = document.createTextNode("" + errMessage);
+            containerForRenderErrorUsername.appendChild(warningText);
+            containerForRenderErrorUsername.style.visibility = "visible";
+          } else {
+            containerForRenderErrorUsername.style.visibility = "visible";
+          }
+          usernameDOM.addEventListener('focus', function () {
             if (formGroupForUsername.classList.contains("has-error")) {
-              formGroupForUsername.classList.remove("has-error");
-              usernameDOM.nextSibling.nextSibling.innerHTML = "";
               containerForRenderErrorUsername.style.visibility = "hidden";
             }
-            if (!formGroupForPassword.classList.contains("has-error")) {
-              formGroupForPassword.classList.add("has-error");
-              var warningText = document.createTextNode("" + error);
-              containerForRenderErrorPassword.appendChild(warningText);
-              containerForRenderErrorPassword.style.visibility = "visible";
-            } else {
-              containerForRenderErrorPassword.style.visibility = "visible";
+          });
+          usernameDOM.addEventListener('blur', function () {
+            if (formGroupForUsername.classList.contains("has-error")) {
+              containerForRenderErrorUsername.style.visibility = "visible";
             }
-            passwordDOM.addEventListener('focus', function () {
-              if (formGroupForPassword.classList.contains("has-error")) {
-                containerForRenderErrorPassword.style.visibility = "hidden";
-              }
-            });
-            passwordDOM.addEventListener('blur', function () {
-              if (formGroupForPassword.classList.contains("has-error")) {
-                containerForRenderErrorPassword.style.visibility = "visible";
-              }
-            });
+          });
+        } else if (formGroupForAddingErrorClass === formGroupForEmail) {
+          containerForRenderErrorEmail = document.getElementsByClassName('help-block-email')[0];
 
-          } else if (error.indexOf("username") != -1) {
+          if (formGroupForUsername.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+          }
+          if (formGroupForPassword.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
+          }
+
+          if (!formGroupForEmail.classList.contains("has-error")) {
+            formGroupForEmail.classList.add("has-error");
+            var warningText = document.createTextNode("" + errMessage);
+            containerForRenderErrorEmail.appendChild(warningText);
+            containerForRenderErrorEmail.style.visibility = "visible";
+          } else {
+            containerForRenderErrorEmail.style.visibility = "visible";
+          }
+          emailDOM.addEventListener('focus', function () {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              containerForRenderErrorEmail.style.visibility = "hidden";
+            }
+          });
+          emailDOM.addEventListener('blur', function () {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              containerForRenderErrorEmail.style.visibility = "visible";
+            }
+          });
+        } else if (formGroupForAddingErrorClass === formGroupForPassword) {
+          containerForRenderErrorPassword = document.getElementsByClassName('help-block-password')[0];
+
+          if (formGroupForEmail) {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForEmail, emailDOM, containerForRenderErrorEmail);
+            }
+          }
+          if (formGroupForUsername.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+          }
+          if (formGroupForPassword.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
+          }
+
+          if (!formGroupForPassword.classList.contains("has-error")) {
+            formGroupForPassword.classList.add("has-error");
+            var warningText = document.createTextNode("" + errMessage);
+            containerForRenderErrorPassword.appendChild(warningText);
+            containerForRenderErrorPassword.style.visibility = "visible";
+          } else {
+            containerForRenderErrorPassword.style.visibility = "visible";
+          }
+          passwordDOM.addEventListener('focus', function () {
             if (formGroupForPassword.classList.contains("has-error")) {
-              formGroupForPassword.classList.remove("has-error");
-              passwordDOM.nextSibling.nextSibling.innerHTML = "";
               containerForRenderErrorPassword.style.visibility = "hidden";
             }
-            containerForRenderErrorUsername = document.getElementsByClassName('help-block-username')[0];
-            if (!formGroupForUsername.classList.contains("has-error")) {
-              formGroupForUsername.classList.add("has-error");
-              var warningText = document.createTextNode("" + error);
-              containerForRenderErrorUsername.appendChild(warningText);
-              containerForRenderErrorUsername.style.visibility = "visible";
-            } else {
-              containerForRenderErrorUsername.style.visibility = "visible";
+          });
+          passwordDOM.addEventListener('blur', function () {
+            if (formGroupForPassword.classList.contains("has-error")) {
+              containerForRenderErrorPassword.style.visibility = "visible";
             }
-            usernameDOM.addEventListener('focus', function () {
-              if (formGroupForUsername.classList.contains("has-error")) {
-                containerForRenderErrorUsername.style.visibility = "hidden";
-              }
-            });
-            usernameDOM.addEventListener('blur', function () {
-              if (formGroupForUsername.classList.contains("has-error")) {
-                containerForRenderErrorUsername.style.visibility = "visible";
-              }
-            });
-          }
+          });
         }
-      });
-    });
-  } else if (window.location.pathname === '/register') {
-    var form = document.getElementsByClassName('form-register')[0];
+      }
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      var email = undefined;
-      var username = undefined;
-      var password = undefined;
-
-      function validationForm (inputEmail, inputUsername, inputPassword, minLength, maxLength) {
-        function validateEmail (inputEmail) {
-          var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-          if (inputEmail.value.match(mailFormat)) {
-            email = inputEmail.value;
-            return true
-          } else {
-            alert("You have entered an invalid email address!");
-            inputEmail.focus();
-            return false;
-          }
-        }
-
+      function validationForm (inputUsername, inputPassword, minLength, maxLength) {
         function validateUsername (inputUsername) {
-          var usernameFormat = /^[A-Za-z]+$/;
+          var usernameFormat = /^\w+$/;
           if (inputUsername.value.match(usernameFormat)) {
-            username = inputUsername.value;
+            usernameVal = inputUsername.value;
             return true;
           } else {
-            alert('Username must have alphabet characters only');
-            inputUsername.focus();
+            addErrorClass(formGroupForUsername, 'Username are not valid! Characters, that allowed: A-Z, a-z, 0-9, _');
             return false;
           }
         }
@@ -189,11 +176,235 @@ window.onload = function () {
         function validatePassword (inputPassword, minLength, maxLength) {
           var passwordLength = inputPassword.value.length;
           if (passwordLength === 0 || passwordLength < minLength || passwordLength > maxLength) {
-            alert("Password should not be empty / length be between " + minLength + " to " + maxLength);
-            inputPassword.focus();
+            addErrorClass(formGroupForPassword, "Password should not be empty / length be between " + minLength + " to " + maxLength + "!");
             return false;
           } else {
-            password = inputPassword.value;
+            passwordVal = inputPassword.value;
+            return true;
+          }
+        }
+
+        if (validateUsername(inputUsername)) {
+          if (validatePassword(inputPassword, minLength, maxLength)) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      var resultOfValidation = validationForm(usernameDOM, passwordDOM, 7, 12);
+
+      if (resultOfValidation) {
+
+        var dataForSendToServer = {
+          username: usernameVal,
+          password: passwordVal
+        };
+
+        $.ajax({
+          url: '/login',
+          method: 'POST',
+          data: JSON.stringify(dataForSendToServer),
+          contentType: "application/json; charset=utf-8",
+          success: function (data) {
+            if (formGroupForPassword.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
+            }
+            if (formGroupForUsername.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+            }
+
+            addSuccessClass([formGroupForUsername, formGroupForPassword]);
+
+            // handler modal window
+            $('#myModalLogin').on('show.bs.modal', function() {
+              var $modal = $(this);
+              $modal.find('.modal-body > p').html("Authentication is successful! Welcome, dear " + data.username + "!");
+            });
+            $('#myModalLogin').modal('show');
+            setTimeout(function () {
+              $('#myModalLogin').modal('hide');
+              if (data.isAdmin) {
+                window.location.href = "/admin#/posts";
+              } else {
+                window.location.href = "/";
+              }
+            }, 2000);
+          },
+          error: function (jqXHR) {
+            var error = JSON.parse(jqXHR.responseText);
+
+            if (error.indexOf("password") != -1) {
+              addErrorClass(formGroupForPassword, error);
+
+            } else if (error.indexOf("username") != -1) {
+              addErrorClass(formGroupForUsername, error);
+            }
+          }
+        });
+      }
+    });
+  } else if (window.location.pathname === '/register') {
+    var form = document.getElementsByClassName('form-register')[0];
+
+    var passwordDOM = document.getElementById('passwordRegister');
+    var formGroupForPassword = passwordDOM.parentNode.parentNode;
+    var usernameDOM = document.getElementById('usernameRegister');
+    var formGroupForUsername = usernameDOM.parentNode.parentNode;
+    var emailDOM = document.getElementById('emailRegister');
+    var formGroupForEmail = emailDOM.parentNode.parentNode;
+
+    var containerForRenderErrorUsername = undefined;
+    var containerForRenderErrorPassword = undefined;
+    var containerForRenderErrorEmail = undefined;
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var emailVal = undefined;
+      var usernameVal = undefined;
+      var passwordVal = undefined;
+
+      function addSuccessClass (arrayOfFormGroup) {
+        arrayOfFormGroup.forEach(function (formGroup) {
+          formGroup.classList.add("has-success");
+        });
+      }
+
+      function deleteErrorClass (formGroupFor, elementOfDOM, containerForRenderError) {
+        formGroupFor.classList.remove("has-error");
+        elementOfDOM.nextSibling.nextSibling.innerHTML = "";
+        containerForRenderError.style.visibility = "hidden";
+      }
+
+      function addErrorClass (formGroupForAddingErrorClass, errMessage) {
+        if (formGroupForAddingErrorClass === formGroupForUsername) {
+          containerForRenderErrorUsername = document.getElementsByClassName('help-block-username')[0];
+
+          if (formGroupForEmail) {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForEmail, emailDOM, containerForRenderErrorEmail);
+            }
+          }
+          if (formGroupForPassword.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
+          }
+          if (formGroupForUsername.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+          }
+
+          if (!formGroupForUsername.classList.contains("has-error")) {
+            formGroupForUsername.classList.add("has-error");
+            var warningText = document.createTextNode("" + errMessage);
+            containerForRenderErrorUsername.appendChild(warningText);
+            containerForRenderErrorUsername.style.visibility = "visible";
+          } else {
+            containerForRenderErrorUsername.style.visibility = "visible";
+          }
+          usernameDOM.addEventListener('focus', function () {
+            if (formGroupForUsername.classList.contains("has-error")) {
+              containerForRenderErrorUsername.style.visibility = "hidden";
+            }
+          });
+          usernameDOM.addEventListener('blur', function () {
+            if (formGroupForUsername.classList.contains("has-error")) {
+              containerForRenderErrorUsername.style.visibility = "visible";
+            }
+          });
+        } else if (formGroupForAddingErrorClass === formGroupForEmail) {
+          containerForRenderErrorEmail = document.getElementsByClassName('help-block-email')[0];
+
+          if (formGroupForUsername.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+          }
+          if (formGroupForPassword.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
+          }
+
+          if (!formGroupForEmail.classList.contains("has-error")) {
+            formGroupForEmail.classList.add("has-error");
+            var warningText = document.createTextNode("" + errMessage);
+            containerForRenderErrorEmail.appendChild(warningText);
+            containerForRenderErrorEmail.style.visibility = "visible";
+          } else {
+            containerForRenderErrorEmail.style.visibility = "visible";
+          }
+          emailDOM.addEventListener('focus', function () {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              containerForRenderErrorEmail.style.visibility = "hidden";
+            }
+          });
+          emailDOM.addEventListener('blur', function () {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              containerForRenderErrorEmail.style.visibility = "visible";
+            }
+          });
+        } else if (formGroupForAddingErrorClass === formGroupForPassword) {
+          containerForRenderErrorPassword = document.getElementsByClassName('help-block-password')[0];
+
+          if (formGroupForEmail) {
+            if (formGroupForEmail.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForEmail, emailDOM, containerForRenderErrorEmail);
+            }
+          }
+          if (formGroupForUsername.classList.contains("has-error")) {
+            deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+          }
+
+          if (!formGroupForPassword.classList.contains("has-error")) {
+            formGroupForPassword.classList.add("has-error");
+            var warningText = document.createTextNode("" + errMessage);
+            containerForRenderErrorPassword.appendChild(warningText);
+            containerForRenderErrorPassword.style.visibility = "visible";
+          } else {
+            containerForRenderErrorPassword.style.visibility = "visible";
+          }
+          passwordDOM.addEventListener('focus', function () {
+            if (formGroupForPassword.classList.contains("has-error")) {
+              containerForRenderErrorPassword.style.visibility = "hidden";
+            }
+          });
+          passwordDOM.addEventListener('blur', function () {
+            if (formGroupForPassword.classList.contains("has-error")) {
+              containerForRenderErrorPassword.style.visibility = "visible";
+            }
+          });
+        }
+      }
+
+      function validationForm (inputEmail, inputUsername, inputPassword, minLength, maxLength) {
+        function validateEmail (inputEmail) {
+          var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+          if (inputEmail.value.match(mailFormat)) {
+            emailVal = inputEmail.value;
+            return true
+          } else {
+            addErrorClass(formGroupForEmail, "You have entered an invalid email address!");
+            return false;
+          }
+        }
+
+        function validateUsername (inputUsername) {
+          var usernameFormat = /^\w+$/;
+          if (inputUsername.value.match(usernameFormat)) {
+            usernameVal = inputUsername.value;
+            return true;
+          } else {
+            addErrorClass(formGroupForUsername, 'Username are not valid! Characters, that allowed: A-Z, a-z, 0-9, _');
+            return false;
+          }
+        }
+
+        function validatePassword (inputPassword, minLength, maxLength) {
+          var passwordLength = inputPassword.value.length;
+          if (passwordLength === 0 || passwordLength < minLength || passwordLength > maxLength) {
+            addErrorClass(formGroupForPassword, "Password should not be empty / length be between " + minLength + " to " + maxLength + "!");
+            return false;
+          } else {
+            passwordVal = inputPassword.value;
             return true;
           }
         }
@@ -202,31 +413,48 @@ window.onload = function () {
           if (validateUsername(inputUsername)) {
             if (validatePassword(inputPassword, minLength, maxLength)) {
               return true;
+            } else {
+              return false;
             }
+          } else {
+            return false;
           }
+        } else {
+          return false;
         }
       }
 
-      validationForm(document.getElementById('emailRegister'),
-      document.getElementById('usernameRegister'),
-      document.getElementById('passwordRegister'), 7, 12);
+      var resultOfValidation = validationForm(emailDOM, usernameDOM, passwordDOM, 7, 12);
 
-      var dataForSendToServer = {
-        email: email,
-        username: username,
-        password: password
-      };
+      if (resultOfValidation) {
 
-      $.ajax({
-        url: '/register',
-        method: 'POST',
-        data: JSON.stringify(dataForSendToServer),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        statusCode: {
-          200: function (data) {
+        var dataForSendToServer = {
+          email: emailVal,
+          username: usernameVal,
+          password: passwordVal
+        };
 
-            //handler modal window
+        $.ajax({
+          url: '/register',
+          method: 'POST',
+          data: JSON.stringify(dataForSendToServer),
+          contentType: "application/json; charset=utf-8",
+          success: function (data) {
+
+            if (formGroupForEmail.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForEmail, emailDOM, containerForRenderErrorEmail);
+            }
+            if (formGroupForUsername.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForUsername, usernameDOM, containerForRenderErrorUsername);
+            }
+            if (formGroupForPassword.classList.contains("has-error")) {
+              deleteErrorClass(formGroupForPassword, passwordDOM, containerForRenderErrorPassword);
+            }
+
+            addSuccessClass([formGroupForEmail, formGroupForUsername, formGroupForPassword])
+
+            // handler modal window
+            
             $('#myModalRegister').on('show.bs.modal', function() {
               var $modal = $(this);
               $modal.find('.modal-body > p').html("You are registered. Welcome to my blog, dear " + data.username + "!");
@@ -234,15 +462,21 @@ window.onload = function () {
             $('#myModalRegister').modal('show');
             setTimeout(function () {
               $('#myModalRegister').modal('hide');
+              if (data.isAdmin) {
+                window.location.href = "/admin#/posts";
+              } else {
                 window.location.href = "/";
+              }
             }, 2000);
           },
-          403: function (jqXHR) {
-            var error = JSON.parse(jqXHR.responseText);
-            alert(error);
+          error: function (jqXHR) {
+            if (jqXHR.status === 409) {
+              var error = JSON.parse(jqXHR.responseText);
+              addErrorClass(formGroupForUsername, error);
+            }
           }
-        }
-      });
+        });
+      }
     });
   }
 }
