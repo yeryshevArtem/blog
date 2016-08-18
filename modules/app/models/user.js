@@ -8,9 +8,10 @@ function User (username, password, email) {
   var now = new Date ();
   var isoDate = new Date(now).toISOString();
   this.username = username;
+  this.email = email;
   this.salt = Math.random() + '';
   this.hashed_password = this.encryptPassword(password);
-  this.email = email;
+  this.role = 'customer';
   this.createdAt = isoDate;
   this.modifiedAt = isoDate;
 };
@@ -66,7 +67,7 @@ User.register = function (username, password, email, users, callback) {
   var users = users; //variable for interface from model database - users
   var User = this;
   var user = new User(username, password, email);
-  users.create(user.username, user.email, user.salt, user.hashed_password, user.createdAt, user.modifiedAt, function (err, data) {
+  users.create(user.username, user.email, user.salt, user.hashed_password, user.role, user.createdAt, user.modifiedAt, function (err, data) {
     if (err) {
       return callback(new HttpError(409, "The user with this username has been registered! Please, input another username."));
     } else {

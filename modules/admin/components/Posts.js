@@ -14,7 +14,7 @@ function Posts (props) {
         flagToDeleteForModalCont={props.flagToDeleteForPostsComp}
         curPostForModalCont={props.curPostForPostComp}
         updateToModalCont={props.update} />
-      <div className='col-sm-12' style={styles.space}>
+      <div className='col-sm-12 top-button' style={styles.space}>
         <button type="button" className="btn btn-primary btn-create" onClick={props.clickedCreate}>
           New post
         </button>

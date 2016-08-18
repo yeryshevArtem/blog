@@ -1,6 +1,6 @@
 var express = require('express');
 var modelUsers = require('../models-postgre/users');
-var users = undefined;
+
 var params = {
   port: 8000,
   ip: '192.168.33.11'

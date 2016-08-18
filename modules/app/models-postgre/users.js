@@ -13,8 +13,8 @@ module.exports.disconnect = function(callback) {
   callback();
 }
 
-module.exports.create = function (username, email, saltPassword, hashedPassword, createdAt, modifiedAt, callback) {
-  client.query("insert into users(username, email, salt_password, hashed_password, created_at, modified_at) values($1, $2, $3, $4, $5, $6) returning username, id", [username, email, saltPassword, hashedPassword, createdAt, modifiedAt]).then(function (data) {
+module.exports.create = function (username, email, saltPassword, hashedPassword, role, createdAt, modifiedAt, callback) {
+  client.query("insert into users(username, email, salt_password, hashed_password, role, created_at, modified_at) values($1, $2, $3, $4, $5, $6, $7) returning username, id, role", [username, email, saltPassword, hashedPassword, role, createdAt, modifiedAt]).then(function (data) {
     callback(null, data);
   }).catch(function (err) {
     callback(err);

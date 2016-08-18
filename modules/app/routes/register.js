@@ -30,11 +30,8 @@ router.post('/register', function (req, res, next) {
         return next(err);
       }
     }
-    if (user[0].username === "bruce_wayne") {
-      user[0].isAdmin = true;
-      req.session.admin = user[0].username;
-    }
-    req.session.user = user[0].id
+    req.session.role = user[0].role;
+    req.session.user = user[0].id;
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(JSON.stringify(user[0]));
   });

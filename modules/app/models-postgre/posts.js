@@ -42,7 +42,7 @@ module.exports.read = function (key, callback) {
     if (data.length !== 0) {
       callback(null, data);
     } else {
-      throw err; //err is nit defined !!! Muse be fixed !!!
+      throw err; 
     }
   }).catch(function (err) {
     callback(err);
