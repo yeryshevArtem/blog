@@ -39,19 +39,19 @@ a {
 }
 
 section {
-  min-height: 50%;
+  min-height: 100%;
   height: auto !important;
-  height: 50%;
-  /*margin: 0 auto -4em;*/
+  height: 100%;
+  margin-bottom: -142px;
 }
 
 footer, .push {
-  height: 4em;
+  height: 142px;
 }
 
 footer, .push {
   clear: both;
-  padding-left: 50%;
+  padding-left: 45%;
 }
 
 .img-for-animation {
@@ -86,6 +86,10 @@ p {
 h1 {
   text-align: left;
   padding-bottom: 5%;
+}
+
+h1.error, h2.error {
+  padding-left: 20%;
 }
 
 .header-of-post {
