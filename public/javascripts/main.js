@@ -2,19 +2,19 @@ window.onload = function () {
 
   var login = document.getElementsByClassName('btn-login')[0];
   var register = document.getElementsByClassName('btn-register')[0];
-  var article = document.getElementsByClassName('post');
+  var li = document.getElementsByClassName('main-post');
 
-  for (var i=0; i < article.length; i++) {
-    article[i].addEventListener('mouseover', function (event) {
+  for (var i=0; i < li.length; i++) {
+    li[i].addEventListener('mouseover', function (event) {
        event.target.style.cursor = "pointer";
     });
-    article[i].addEventListener('mousedown', function (event) {
+    li[i].addEventListener('mousedown', function (event) {
       event.preventDefault();
     });
-    article[i].addEventListener('mouseup', function (event) {
+    li[i].addEventListener('mouseup', function (event) {
       var id = undefined;
       event.preventDefault();
-      if (event.target.nodeName === "ARTICLE") {
+      if (event.target.nodeName === "LI") {
         id = event.target.id;
         window.location.href = "/post/" + id;
       } else {
@@ -227,7 +227,7 @@ window.onload = function () {
             $('#myModalLogin').modal('show');
             setTimeout(function () {
               $('#myModalLogin').modal('hide');
-              if (data.isAdmin) {
+              if (data.role !== "customer") {
                 window.location.href = "/admin#/posts";
               } else {
                 window.location.href = "/";
@@ -462,7 +462,7 @@ window.onload = function () {
             $('#myModalRegister').modal('show');
             setTimeout(function () {
               $('#myModalRegister').modal('hide');
-              if (data.isAdmin) {
+              if (data.role !== "customer") {
                 window.location.href = "/admin#/posts";
               } else {
                 window.location.href = "/";

@@ -1,25 +1,23 @@
 <% include top%>
 <% include navbar%>
-<% include carousel%>
-<section id="main" class="wrapper">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
+<div class="container wrapper main-page">
+  <div class="row">
+    <div class="col-sm-12">
+      <ul>
         <%
           if (posts) {
             posts.forEach(function(post) {
               post.createdAt = post.createdAt.toDateString();
-              %><article class="post" id=<%= post.id %>>
-                <h1 class="header-of-post"><%= post.title %></h1>
-                <p class="date-of-post"><%= post.createdAt %></p>
-                <hr align="left">
-              </article><%
+              %><li class="main-post" id=<%= post.id %>>
+              <p class="date-of-post"><%= post.createdAt %></p>
+              <h2 class="header-of-post"><%= post.title %></h2>
+              </li><%
             });
           }
         %>
-      </div>
+      </ul>
     </div>
   </div>
   <div class="push"></div>
-</section>
+</div>
 <% include bottom %>

@@ -7,16 +7,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><span class="distinguisher">Erishev</span> Artem</a>
+      <a class="navbar-brand" href="/">Erishev Artem</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if (user) { %>
-          <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link navbar-username"><%=user.username%></a></p>
+          <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link"><span class="username"><%=user.username%></a></span></p>
           <li><a href="" onclick="$('<form method=POST action=/logout>').submit();return false">Sign out</a></form></li>
-        <% } else { %>
-          <button type="button" class="btn btn-default navbar-btn btn-register">Register</button>
-          <button type="button" class="btn btn-default navbar-btn btn-login">Sign in</button>
+          <% } else { %>
+            <button type="button" class="btn btn-default navbar-btn btn-register">Register</button>
+            <button type="button" class="btn btn-default navbar-btn btn-login">Sign in</button>
         <% } %>
       </ul>
     </div>
