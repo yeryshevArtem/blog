@@ -15,7 +15,6 @@ var ModalContainer = React.createClass({
     }
   },
   //for autocomplete fields in modal window, when clicking on edit, state of modal component are changed
-
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.curPostForModalCont) {
       this.setState ({
@@ -41,6 +40,9 @@ var ModalContainer = React.createClass({
   handleBodyChange: function(e) {
     this.setState({body: e.target.value});
   },
+  componentDidUpdate: function (prevProps, prevState) {
+    console.log(prevState);
+  },
   handleSaveButton: function () {
 
     //for create operations
@@ -63,17 +65,11 @@ var ModalContainer = React.createClass({
           createdAt:  returnedData.data['created_at'],
           modifiedAt: returnedData.data['modified_at']
         });
-        // console.log(this.state);
-      //   $('#modalPrimary').modal('hide');
-      //   this.props.updateToModalCont(returnedData.data, returnedData);
-      // }.bind(this)).catch(function (err) {
-      //   alert(err.message);
-      // });
-      $('#modalPrimary').modal('hide');
-      this.props.updateToModalCont(this.state, {config: {method: 'post'}});
-    }.bind(this)).catch(function (err) {
-      alert(err.message);
-    });
+        $('#modalPrimary').modal('hide');
+        this.props.updateToModalCont(this.state, 'post');
+      }.bind(this)).catch(function (err) {
+        alert(err.message);
+      });
 
       //for update operations
 
@@ -96,7 +92,7 @@ var ModalContainer = React.createClass({
             modifiedAt: returnedData.data['modified_at']
           });
         $('#modalPrimary').modal('hide');
-        this.props.updateToModalCont(this.state, returnedData);
+        this.props.updateToModalCont(this.state, 'put');
       }.bind(this)).catch(function (err) {
         alert(err.message);
       });
@@ -105,24 +101,10 @@ var ModalContainer = React.createClass({
 
     } else if (this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === true) {
       var id = this.props.curPostForModalCont.id;
-      var listOfPosts = this.props.listToModalCont;
       loadData.deletePost(id).then(function () {
-        listOfPosts.forEach(function (post, item) {
-          if (post.id === id) {
-            listOfPosts.splice(item, 1)
-          }
-        });
         $('#modalPrimary').modal('hide');
         setTimeout(function () {
-          this.props.updateToModalCont({
-            posts: listOfPosts,
-            curPost: undefined,
-            flagToDelete: false
-          }, {
-            config: {
-              method: 'delete'
-            }
-          });
+          this.props.updateToModalCont({id: id}, 'delete');
         }.bind(this), 150);
       }.bind(this)).catch(function (err) {
         alert(err.message);
@@ -130,18 +112,10 @@ var ModalContainer = React.createClass({
     }
   },
   handleCancel: function () {
-    if (this.props.flagToDeleteForModalCont == true) {
+    if (this.props.flagToDeleteForModalCont === true) {
       $('#modalPrimary').modal('hide');
       setTimeout(function () {
-        this.props.updateToModalCont({
-          posts: this.props.listToModalCont,
-          curPost: undefined,
-          flagToDelete: false
-        }, {
-            config: {
-              method: 'delete'
-            }
-        });
+        this.props.updateToModalCont();
       }.bind(this), 150);
     } else {
       $('#modalPrimary').modal('hide');

@@ -13,4 +13,5 @@ var converterToLocalDate = {
     post['modified_at'] = (new Date(post['modified_at'])).toLocaleString();
   }
 }
+
 module.exports = converterToLocalDate;

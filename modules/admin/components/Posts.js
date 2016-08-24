@@ -3,7 +3,7 @@ var Navbar = require('./Navbar');
 var MainContainer = require('./MainContainer');
 var styles = require('../styles');
 var ModalContainer = require('../containers/ModalContainer');
-var Table = require('./Table');
+var TableContainer = require('../containers/TableContainer');
 
 function Posts (props) {
   return (
@@ -12,7 +12,7 @@ function Posts (props) {
       <ModalContainer
         listToModalCont={props.listOfPosts}
         flagToDeleteForModalCont={props.flagToDeleteForPostsComp}
-        curPostForModalCont={props.curPostForPostComp}
+        curPostForModalCont={props.currentPost}
         updateToModalCont={props.update} />
       <div className='col-sm-12 top-button' style={styles.space}>
         <button type="button" className="btn btn-primary btn-create" onClick={props.clickedCreate}>
@@ -20,13 +20,12 @@ function Posts (props) {
         </button>
       </div>
       <div className='col-sm-12' style={styles.space}>
-        <Table
+        <TableContainer
           className="table table-hover table-posts"
-          editButtonToTableComp={props.clickedEdit}
-          deleteButtonToTableComp={props.clickedDelete}
-          mouseDownToTableComp={props.mouseDown}
-          mouseOveredToTableComp={props.mouseOvered}
-          listToTableComp={props.listOfPosts} />
+          editButtonToTableCont={props.editButtonToPostComp}
+          deleteButtonToTableCont={props.deleteButtonToPostComp}
+          updateToTableCont={props.update}
+          listToTableCont={props.listOfPosts} />
       </div>
     </MainContainer>
   )

@@ -8,7 +8,7 @@ var PostsContainer = React.createClass({
   getInitialState: function () {
     return {
       posts: [],
-      curPost: undefined,
+      currentPost: undefined,
       flagToDelete: false
     }
   },
@@ -16,35 +16,22 @@ var PostsContainer = React.createClass({
     loadData.getPosts().then(function (result) {
       converterToLocalDate.install(result.data);
       this.setState({
-        posts: result.data
+        posts: result.data,
+        currentPost: undefined,
+        flagToDelete: false
       });
     }.bind(this)).catch(function (err) {
       alert(err.message);
     });
   },
-  // componentWillReceiveProps: function (nextProps) {
-  //   console.log(nextProps);
-  // },
-  handleMouseOvered: function (event) {
-    event.target.style.cursor = "pointer";
-  },
-  handleMouseDown: function (event) {
-    event.preventDefault();
-  },
-  handleCreateButton: function () {
-    this.setState({
-      posts: this.state.posts,
-      curPost: undefined
-    });
-    $('#modalPrimary').modal('show');
-  },
   handleEditButton: function (event) {
     var id = event.target.parentNode.parentNode.id;
     this.state.posts.forEach(function (post) {
-      if (post.id == id) {
+      if (post.id.toString() === id) {
         this.setState({
           posts: this.state.posts,
-          curPost: post
+          currentPost: post,
+          flagToDelete: false
         });
       }
     }.bind(this));
@@ -53,90 +40,66 @@ var PostsContainer = React.createClass({
   handleDeleteButton: function (event) {
     var id = event.target.parentNode.parentNode.id;
     this.state.posts.forEach(function (post) {
-      if (post.id == id) {
+      if (post.id.toString() === id) {
         this.setState({
           posts: this.state.posts,
-          curPost: post,
+          currentPost: post,
           flagToDelete: true
         });
       }
     }.bind(this));
     $('#modalPrimary').modal('show');
   },
+  handleCreateButton: function () {
+    this.setState({
+      posts: this.state.posts,
+      currentPost: undefined,
+      flagToDelete: false
+    });
+    $('#modalPrimary').modal('show');
+  },
   updateData: function (config, method) {
-    if (method.config.method === 'post') {
+    if (method === 'post') {
       this.state.posts.push(config);
-      this.setState({
-        posts: this.state.posts
-      });
-    } else if (method.config.method === 'put') {
+    } else if (method === 'put') {
       this.state.posts.forEach(function (post, index) {
-        if (post.id == config.id) {
+        if (post.id === config.id) {
           this.state.posts[index] = config;
           converterToLocalDate.install(this.state.posts);
-          this.setState({
-            posts: this.state.posts,
-            curPost: undefined
-          });
         }
       }.bind(this));
-    } else {
-      this.setState({
-        posts: config.posts,
-        curPost: config.curPost,
-        flagToDelete: config.flagToDelete
-      });
+    } else if (method === 'delete') {
+      var id = config.id;
+      this.state.posts.forEach(function (post, item) {
+        if (post.id === id) {
+          this.state.posts.splice(item, 1);
+        }
+      }.bind(this));
     }
+    this.setState({
+      posts: this.state.posts,
+      currentPost: undefined,
+      flagToDelete: false
+    });
   },
   render: function () {
-    if (this.props.params.id === undefined && this.state.curPost === undefined && this.state.flagToDelete === false) {
+    if (this.props.params.id === undefined) {
       return (
         <div>
           <Posts
-            flagToDeleteForPostsComp={this.state.flagToDelete}
-            update={this.updateData}
+            editButtonToPostComp={this.handleEditButton}
+            deleteButtonToPostComp={this.handleDeleteButton}
             clickedCreate={this.handleCreateButton}
-            mouseOvered={this.handleMouseOvered}
-            listOfPosts={this.state.posts}
-            mouseDown={this.handleMouseDown}
-            clickedEdit={this.handleEditButton}
-            clickedDelete={this.handleDeleteButton} />
+            update={this.updateData}
+            currentPost={this.state.currentPost}
+            flagToDeleteForPostsComp={this.state.flagToDelete}
+            listOfPosts={this.state.posts} />
         </div>
       )
     } else if (this.props.params.id !== undefined) {
       return (
         <div>
           {this.props.children}
-        </div>
-      )
-    } else if (this.state.curPost !== undefined && this.state.flagToDelete === false) {
-      return (
-        <div>
-          <Posts
-            flagToDeleteForPostsComp={this.state.flagToDelete}
-            curPostForPostComp={this.state.curPost}
-            update={this.updateData}
-            clickedCreate={this.handleCreateButton}
-            mouseOvered={this.handleMouseOvered}
-            listOfPosts={this.state.posts}
-            mouseDown={this.handleMouseDown}
-            clickedEdit={this.handleEditButton}
-            clickedDelete={this.handleDeleteButton} />
-        </div>
-      )
-    } else if (this.state.curPost !== undefined && this.state.flagToDelete === true) {
-      return (
-        <div>
-          <Posts
-            flagToDeleteForPostsComp={this.state.flagToDelete}
-            curPostForPostComp={this.state.curPost}
-            update={this.updateData}
-            clickedCreate={this.handleCreateButton}
-            mouseOvered={this.handleMouseOvered}
-            listOfPosts={this.state.posts}
-            mouseDown={this.handleMouseDown}
-            clickedEdit={this.handleEditButton}
-            clickedDelete={this.handleDeleteButton} />
         </div>
       )
     }

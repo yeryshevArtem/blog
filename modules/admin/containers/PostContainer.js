@@ -1,6 +1,6 @@
 var React = require('react');
-var Navbar = require('./Navbar');
-var MainContainer = require('./MainContainer');
+var Navbar = require('../components/Navbar');
+var MainContainer = require('../components/MainContainer');
 var loadData = require('../utils/loadData');
 
 var Post = React.createClass({
