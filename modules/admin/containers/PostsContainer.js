@@ -24,6 +24,9 @@ var PostsContainer = React.createClass({
       alert(err.message);
     });
   },
+  // componentDidUpdate: function (prevProps, prevState) {
+  //   console.log(prevState);
+  // },
   handleEditButton: function (event) {
     var id = event.target.parentNode.parentNode.id;
     this.state.posts.forEach(function (post) {
@@ -51,11 +54,13 @@ var PostsContainer = React.createClass({
     $('#modalPrimary').modal('show');
   },
   handleCreateButton: function () {
-    this.setState({
-      posts: this.state.posts,
-      currentPost: undefined,
-      flagToDelete: false
-    });
+    if (this.state.currentPost) {
+      this.setState({
+        posts: this.state.posts,
+        currentPost: undefined,
+        flagToDelete: false
+      });
+    }
     $('#modalPrimary').modal('show');
   },
   updateData: function (config, method) {

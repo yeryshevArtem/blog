@@ -17,14 +17,16 @@ var ModalContainer = React.createClass({
   //for autocomplete fields in modal window, when clicking on edit, state of modal component are changed
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.curPostForModalCont) {
+      //modal window for edit operations
       this.setState ({
         id: nextProps.curPostForModalCont.id,
         title: nextProps.curPostForModalCont.title,
         body: nextProps.curPostForModalCont.body,
-        createdAt: this.state.createdAt,
-        modifiedAt: this.state.modifiedAt,
+        createdAt: nextProps.curPostForModalCont.createdAt,
+        modifiedAt: nextProps.curPostForModalCont.modifiedAt,
       });
     } else if (nextProps.curPostForModalCont === undefined) {
+      //modal window for create operations
       this.setState ({
         id: '',
         title: '',
@@ -40,21 +42,19 @@ var ModalContainer = React.createClass({
   handleBodyChange: function(e) {
     this.setState({body: e.target.value});
   },
-  componentDidUpdate: function (prevProps, prevState) {
-    console.log(prevState);
-  },
   handleSaveButton: function () {
-
+    var dataForSendToServer = undefined;
+    var id = undefined;
+    var title = this.state.title;
+    var body = this.state.body;
+    var now = new Date ();
+    var isoDate = new Date(now).toISOString();
+    var createdAt = isoDate;
+    var modifiedAt = isoDate;
+    
     //for create operations
 
-    if (!this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === false) {
-      var dataForSendToServer = undefined;
-      var title = this.state.title;
-      var body = this.state.body;
-      var now = new Date ();
-      var isoDate = new Date(now).toISOString();
-      var createdAt = isoDate;
-      var modifiedAt = isoDate;
+    if (!this.props.curPostForModalCont && !this.props.flagToDeleteForModalCont) {
       dataForSendToServer = "title=" + title + "&body=" + body + "&createdAt=" + createdAt + "&modifiedAt=" + modifiedAt; //issue with axios
       loadData.createPost(dataForSendToServer).then(function (returnedData) {
         converterToLocalDate.create(returnedData.data);
@@ -73,14 +73,8 @@ var ModalContainer = React.createClass({
 
       //for update operations
 
-    } else if (this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === false) {
-      var dataForSendToServer = undefined;
-      var id = this.props.curPostForModalCont.id;
-      var title = this.state.title;
-      var body = this.state.body;
-      var now = new Date ();
-      var isoDate = new Date(now).toISOString();
-      var modifiedAt = isoDate;
+    } else if (this.props.curPostForModalCont && !this.props.flagToDeleteForModalCont) {
+      id = this.props.curPostForModalCont.id;
       dataForSendToServer = "id=" + id + "&title=" + title + "&body=" + body + "&modifiedAt=" + modifiedAt; //issue with axios
       loadData.editPost(id, dataForSendToServer).then(function (returnedData) {
         converterToLocalDate.update(returnedData.data['modified_at']);
@@ -99,8 +93,8 @@ var ModalContainer = React.createClass({
 
       // for delete operations
 
-    } else if (this.props.curPostForModalCont && this.props.flagToDeleteForModalCont === true) {
-      var id = this.props.curPostForModalCont.id;
+    } else if (this.props.curPostForModalCont && this.props.flagToDeleteForModalCont) {
+      id = this.props.curPostForModalCont.id;
       loadData.deletePost(id).then(function () {
         $('#modalPrimary').modal('hide');
         setTimeout(function () {
