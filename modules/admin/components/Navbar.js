@@ -4,7 +4,7 @@ var Link = ReactRouter.Link;
 
 function Navbar () {
   return (
-    <nav className="navbar navbar-default navbar-fixed-top">
+    <nav className="navbar navbar-default">
       <div className="container">
         <ul className="nav navbar-nav">
           <li><Link to="/">Blog</Link></li>

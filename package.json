@@ -10,7 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.1",
+    "body-parser": "^1.15.2",
     "connect-pg-simple": "*",
-    "pg-promise": "*"
+    "cookie-parser": "^1.4.3",
+    "debug": "^2.3.3",
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "morgan": "^1.7.0",
+    "pg": "^6.1.0",
+    "pg-promise": "*",
+    "serve-favicon": "^2.3.2"
   }
 }

@@ -12,4 +12,4 @@ INSERT INTO posts (title, body, created_at, modified_at) VALUES ('How V8 optimis
 
 -- for users table
 
-INSERT INTO users (username, email, salt_password, hashed_password, role, created_at, modified_at) VALUES ('zippi', 'zippi@mail.ru', '32123', '4232ds32323ds32', 'admin', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
+INSERT INTO users (username, email, salt_password, hashed_password, role, created_at, modified_at) VALUES ('zippi', 'zippi@mail.ru', '12345678', 'bfe4e34faad3a0b218ffd053bbafd09b552f4a5d', 'admin', '2016-08-05T13:33:51.740Z', '2016-08-05T13:33:51.740Z');
