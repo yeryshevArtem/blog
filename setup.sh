@@ -31,6 +31,6 @@ echo vagrant | sudo -S -u postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_U
 echo vagrant | sudo -S sed -i 's@#listen_addresses@listen_addresses@' /etc/postgresql/$POSTGRE_VERSION/main/postgresql.conf  #?????????
 
 echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/dump.sql #posts table
-echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/test.sql
 echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/sessions.sql  #session table
 echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/users.sql  #users table
+echo vagrant | sudo -u $DB_USER psql $DB_NAME < /home/vagrant/projects/blog/test.sql

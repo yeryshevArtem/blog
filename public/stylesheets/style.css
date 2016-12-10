@@ -23,9 +23,9 @@ body {
   margin-bottom: -50px;
 }
 
-.main-page, .postview-page {
+/*.main-page, .postview-page {
   padding-top: 7% !important;
-}
+}*/
 
 .login-page {
   padding-top: 15%;
@@ -85,9 +85,9 @@ footer, .push {
 }
 
 
-a {
+/*a {
   color: #00B7FF;
-}
+}*/
 
 .btn {
   margin-left: 10px;
@@ -196,4 +196,7 @@ label {
 
 .text a {
   padding-left: 6%;
+}
+.main-page {
+  margin-bottom: 3%;
 }

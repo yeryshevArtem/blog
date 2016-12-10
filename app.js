@@ -70,6 +70,7 @@ app.use(session({
     pg : pg,
     conString : "postgres://root:12345678@localhost:5432/blog",
   }),
+  saveUninitialized: true,
   secret: "bruceWayne",
   resave: true,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }
